@@ -58,7 +58,7 @@ Sorun giderme kısa rehberi
 - `index.html`: Ana ekran (tanıtım resmi, slogan, iletişim rozetleri)
 - `ayarlar.html`: Uygulama ayarları — logo, ana görsel, iletişim bilgileri, slogan
 - `hakkinda.html`: Program künyesi ve düzenleme alanı (sosyal medya, e-posta, slogan vb.)
-- `nidirilenler/ana-tanitim-gorseli.svg`: Varsayılan tanıtım görseli
+- `depo/ana-tanitim-gorseli.svg`: Varsayılan tanıtım görseli
 - `.github/workflows/deploy-pages.yml`: GitHub Actions ile otomatik deploy
 
 Değiştirme ve düzenleme
