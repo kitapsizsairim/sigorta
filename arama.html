@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gelişmiş Poliçe Arama</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        body { background: #f0f2f5; display: flex; justify-content: center; min-height: 100vh; padding: 10px 0; }
+        .mobil-ekran { width: 100%; max-width: 430px; background: #ffffff; box-shadow: 0 4px 20px rgba(0,0,0,0.1); border-radius: 12px; display: block; padding-bottom: 30px; }
+        header { border-bottom: 1px solid #e5e7eb; padding: 15px; }
+        main { padding: 15px; display: block; width: 100%; }
+        .form-bolum-baslik { font-size: 13px; font-weight: bold; color: #1d4ed8; text-transform: uppercase; margin: 20px 0 12px 0; border-bottom: 2px solid #ef4444; padding-bottom: 3px; text-align: left; }
+        .satir-iki { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+        .form-grup { text-align: left; width: 100%; }
+        .form-grup label { display: block; font-size: 11px; font-weight: bold; margin-bottom: 4px; color: #4b5563; }
+        .form-grup input, .form-grup select { width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 12px; outline: none; }
+        .sonuc-kapsayici { margin-top: 15px; }
+        .police-kart { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px; margin-bottom: 10px; text-align: left; }
+        .kart-baslik { font-size: 14px; font-weight: bold; color: #111827; margin-bottom: 5px; display: flex; justify-content: space-between; }
+        .kart-detay { font-size: 12px; color: #4b5563; margin-bottom: 3px; }
+        .etiket { padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold; color: white; }
+        .etiket-aktif { background: #059669; }
+        .etiket-iptal { background: #dc2626; }
+        .etiket-borc { background: #d97706; }
+        footer { padding: 15px; background: #f9fafb; border-top: 1px solid #e5e7eb; text-align: center; margin-top: 20px; border-radius: 0 0 12px 12px; }
+    </style>
+</head>
+<body>
+    <div class="mobil-ekran">
+        <header><h1 style="font-weight: bold; font-size: 16px; color:#1d4ed8;" id="arama-acente-adi">Güven Sigorta</h1></header>
+        <main>
+            <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+                <button type="button" onclick="location.href='index.html';" style="padding: 6px 12px; background: #e5e7eb; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size:13px;">← Ana Menü</button>
+                <h2 style="font-size: 14px; font-weight: bold;">Gelişmiş Poliçe Arama</h2>
+            </div>
+
+            <div class="form-bolum-baslik">Arama Filtreleri</div>
+            <div class="satir-iki">
+                <div class="form-grup"><label>Adı Soyadı</label><input type="text" id="arama-ad" placeholder="Müşteri adı..."></div>
+                <div class="form-grup"><label>Poliçe No</label><input type="text" id="arama-no" placeholder="Poliçe no..."></div>
+            </div>
+            <div class="satir-iki">
+                <div class="form-grup"><label>Müşteri TC / Vergi</label><input type="number" id="arama-tc"></div>
+                <div class="form-grup"><label>Plaka</label><input type="text" id="arama-plaka" placeholder="34ABC123"></div>
+            </div>
+            <div class="satir-iki">
+                <div class="form-grup">
+                    <label>Şirket Adı</label>
+                    <select id="arama-sirket">
+                        <option value="HEPSI">-- Tümü --</option><option>Allianz Sigorta</option><option>Anadolu Sigorta</option><option>Doğa Sigorta</option><option>Türk Nippon Sigorta</option><option>Quick Sigorta</option>
+                    </select>
+                </div>
+                <div class="form-grup">
+                    <label>Poliçe Türü (Branş)</label>
+                    <select id="arama-branis">
+                        <option value="HEPSI">-- Tümü --</option><option>Trafik Sigortası</option><option>Kasko Sigortası</option><option>DASK</option><option>Sağlık Sigortası</option>
+                    </select>
+                </div>
+            </div>
+            <div class="satir-iki">
+                <div class="form-grup">
+                    <label>Özel Durum Süzgeci</label>
+                    <select id="arama-ozeldurum">
+                        <option value="HEPSI">-- Tümü --</option><option value="IPTAL">İptal Edilenler</option><option value="BORC">Borcu Olanlar</option><option value="SURE_BITEN">Süresi Bitenler</option>
+                    </select>
+                </div>
+                <div class="form-grup"><label>Kalan Gün (Eşit/Küçük)</label><input type="number" id="arama-kalangun"></div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 15px;">
+                <div class="form-grup"><label>Vade Günü</label><select id="vade-gun"><option value="HEPSI">Tümü</option></select></div>
+                <div class="form-grup">
+                    <label>Vade Ayı</label>
+                    <select id="vade-ay">
+                        <option value="HEPSI">Tümü</option><option value="01">Ocak</option><option value="02">Şubat</option><option value="03">Mart</option><option value="04">Nisan</option><option value="05">Mayıs</option><option value="06">Haziran</option><option value="07">Temmuz</option><option value="08">Ağustos</option><option value="09">Eylül</option><option value="10">Ekim</option><option value="11">Kasım</option><option value="12">Aralık</option>
+                    </select>
+                </div>
+                <div class="form-grup"><label>Vade Yılı</label><select id="vade-yil"><option value="HEPSI">Tümü</option><option>2026</option><option>2027</option></select></div>
+            </div>
+
+            <button type="button" onclick="aramaYap()" style="width: 100%; padding: 12px; background: #10b981; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size:14px;">🔍 Poliçeleri Sorgula</button>
+            <div class="form-bolum-baslik">Arama Sonuçları (<span id="sonuc-sayisi">0</span>)</div>
+            <div class="sonuc-kapsayici" id="sonuc-listesi"></div>
+        </main>
+        <footer><p style="font-size: 11px; color: #6b7280;">Acente Arama Motoru © 2026</p></footer>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const hAd = localStorage.getItem("cfg_acenteAd") || "Güven Sigorta";
+            document.getElementById("arama-acente-adi").innerText = hAd;
+            const gSel = document.getElementById("vade-gun");
+            for(let i=1; i<=31; i++) {
+                let v = i < 10 ? "0" + i : i.toString();
+                gSel.innerHTML += '<option value="' + v + '">' + i + '</option>';
+            }
+            aramaYap();
+        });
+
+        const DB = [
+            { no: "554433/1", ad: "Ahmet Yılmaz", tc: "12345678901", plaka: "34ABC123", sirket: "Doğa Sigorta", brans: "Trafik Sigortası", durum: "IPTAL", borc: 0, bitis: "2026-03-15", kalanGun: 0 },
+            { no: "998877/0", ad: "Mehmet Demir", tc: "98765432102", plaka: "06XYZ99", sirket: "Türk Nippon Sigorta", brans: "Kasko Sigortası", durum: "AKTIF", borc: 1250, bitis: "2026-08-20", kalanGun: 45 },
+            { no: "112233/2", ad: "Ayşe Kaya", tc: "45612378903", plaka: "35TUR12", sirket: "Allianz Sigorta", brans: "DASK", durum: "AKTIF", borc: 0, bitis: "2026-03-28", kalanGun: 14 }
+        ];
+
+        function aramaYap() {
+            const fAd = document.getElementById("arama-ad").value.toLowerCase();
+            const fNo = document.getElementById("arama-no").value;
+            const fTc = document.getElementById("arama-tc").value;
+            const fPl = document.getElementById("arama-plaka").value.toLowerCase();
+            const fSi = document.getElementById("arama-sirket").value;
+            const fBr = document.getElementById("arama-branis").value;
+            const fOz = document.getElementById("arama-ozeldurum").value;
+            const fKl = document.getElementById("arama-kalangun").value;
+            const fGn = document.getElementById("vade-gun").value;
+            const fAy = document.getElementById("vade-ay").value;
+            const fYl = document.getElementById("vade-yil").value;
+            const resArea = document.getElementById("sonuc-listesi");
+            resArea.innerHTML = "";
+
+            let res = DB.filter(p => {
+                const [y, m, d] = p.bitis.split("-");
+                if (fAd && !p.ad.toLowerCase().includes(fAd)) return false;
+                if (fNo && !p.no.includes(fNo)) return false;
+                if (fTc && !p.tc.includes(fTc)) return false;
+                if (fPl && !p.plaka.toLowerCase().includes(fPl)) return false;
+                if (fSi !== "HEPSI" && p.sirket !== fSi) return false;
+                if (fBr !== "HEPSI" && p.brans !== fBr) return false;
+                if (fKl && p.kalanGun > parseInt(fKl)) return false;
+                if (fGn !== "HEPSI" && d !== fGn) return false;
+                if (fAy !== "HEPSI" && m !== fAy) return false;
+                if (fYl !== "HEPSI" && y !== fYl) return false;
+                if (fOz === "IPTAL" && p.durum !== "IPTAL") return false;
+                if (fOz === "BORC" && p.borc === 0) return false;
+                if (fOz === "SURE_BITEN" && p.kalanGun > 30) return false;
+                return true;
+            });
+
+            document.getElementById("sonuc-sayisi").innerText = res.length;
+            if(res.length === 0) {
+                resArea.innerHTML = '<p style="font-size:13px; color:#6b7280; margin-top:20px;">Kayıt yok.</p>';
+                return;
+            }
+
+            res.forEach(p => {
+                 let lbl = "";
+                if (p.durum === "IPTAL") {
+                    lbl = '<span class="etiket etiket-iptal">İptal</span>';
+                } else if (p.borc > 0) {
+                    lbl = '<span class="etiket etiket-borc">' + p.borc + ' ₺ Borç</span>';
+                } else {
+                    lbl = '<span class="etiket etiket-aktif">Aktif</span>';
+                }
+                
+                resArea.innerHTML += '<div class="police-kart">' +
+                    '<div class="kart-baslik"><span>🚗 ' + p.plaka.toUpperCase() + '</span>' + lbl + '</div>' +
+                    '<div class="kart-detay"><strong>Müşteri:</strong> ' + p.ad + '</div>' +
+                    '<div class="kart-detay"><strong>Poliçe No:</strong> ' + p.no + ' - ' + p.sirket + '</div>' +
+                    '<div class="kart-detay" style="color:#b91c1c;"><strong>Vade:</strong> ' + 
+                    p.bitis.split("-").reverse().join(".") + ' (' + p.kalanGun + ' Gün)</div>' +
+                    '</div>';
+            });
+        }
+    </script>
+</body>
+</html>

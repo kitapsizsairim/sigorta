@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acente Takip PWA</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
+        body { background: #f0f2f5; display: flex; justify-content: center; min-height: 100vh; padding: 10px 0; }
+        .mobil-ekran { width: 100%; max-width: 430px; background: #ffffff; box-shadow: 0 4px 20px rgba(0,0,0,0.1); border-radius: 12px; display: flex; flex-direction: column; justify-content: space-between; min-height: 90vh; }
+        header { border-bottom: 1px solid #e5e7eb; padding: 12px 15px; background: #ffffff; border-radius: 12px 12px 0 0; }
+        .ust-bar { display: flex; justify-content: space-between; align-items: center; }
+        main { padding: 0 0 15px 0; flex: 1; display: flex; flex-direction: column; }
+        
+        /* Üst Profil Kartı Bölümü */
+        .profil-ust-zemin { background: linear-gradient(to bottom, #e0f2fe, #f0f9ff); padding: 25px 15px 20px 15px; text-align: center; border-bottom: 1px solid #e0f2fe; margin-bottom: 15px; }
+        .profil-logo-yuvarlak { width: 75px; height: 75px; background: #ffffff; border-radius: 50%; margin: 0 auto 12px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.08); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .profil-logo-yuvarlak img { width: 100%; height: 100%; object-fit: cover; }
+        .profil-logo-yuvarlak .logo-varsayilan { font-size: 28px; font-weight: bold; color: #1d4ed8; }
+        .profil-acente-adi { font-size: 19px; font-weight: 870; color: #0f172a; margin-bottom: 8px; text-transform: capitalize; }
+        .profil-iletisim-satir { font-size: 12px; color: #475569; margin-bottom: 5px; display: flex; align-items: center; justify-content: center; gap: 4px; }
+        
+        /* Sosyal Medya Rozet Yerleşimi */
+        .profil-sosyal-grid { display: flex; justify-content: center; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
+        .sosyal-rozet { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 5px 10px; font-size: 11px; color: #334155; font-weight: 600; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
+
+        /* Tanıtım Görsel Alanı */
+        .kurumsal-gorsel-alani { padding: 0 15px; text-align: center; margin-bottom: 15px; }
+        .kurumsal-img { width: 100%; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); object-fit: cover; height: 140px; display: block; }
+        .kurumsal-alt-yazi { font-size: 11px; color: #64748b; line-height: 1.4; padding: 0 10px; margin-top: 8px; }
+
+        /* İkaz Lambası */
+        .ikaz-lambasi-alani { background: #fef2f2; border: 1px solid #fee2e2; border-radius: 10px; padding: 12px; display: flex; align-items: center; gap: 10px; margin: 0 15px 15px 15px; text-align: left; }
+        .ikaz-isik { width: 12px; height: 12px; background-color: #dc2626; border-radius: 50%; box-shadow: 0 0 10px #dc2626; animation: yanipSon 1s infinite alternate; flex-shrink: 0; }
+        .ikaz-metin { font-size: 12px; font-weight: bold; color: #991b1b; line-height: 1.4; }
+        @keyframes yanipSon { 0% { opacity: 0.3; box-shadow: 0 0 2px #dc2626; } 100% { opacity: 1; box-shadow: 0 0 12px #dc2626; } }
+
+        .menu-grid-alani { padding: 0 15px; }
+        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .btn { padding: 16px 10px; border-radius: 12px; border: none; font-weight: bold; color: white; cursor: pointer; text-align: center; text-decoration: none; font-size: 14px; display: flex; align-items: center; justify-content: center; }
+        .btn-giris { background: #2563eb; }
+        .btn-arama { background: #10b981; }
+        .btn-istatistik { background: #8b5cf6; }
+        .btn-ayarlar { background: #4b5563; }
+        .btn-hakkinda { background: #ec4899; width: 100%; margin-top: 12px; }
+        
+        .form-bolum-baslik { font-size: 13px; font-weight: bold; color: #1d4ed8; text-transform: uppercase; margin: 25px 0 12px 0; border-bottom: 2px solid #ef4444; padding-bottom: 3px; text-align: left; }
+        .form-grup { margin-bottom: 14px; text-align: left; width: 100%; display: block; }
+        .form-grup label { display: block; font-size: 12px; font-weight: bold; margin-bottom: 5px; color: #4b5563; }
+        .form-grup input, .form-grup select { width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 13px; outline: none; }
+        footer { padding: 12px; background: #f9fafb; border-top: 1px solid #e5e7eb; text-align: center; border-radius: 0 0 12px 12px; font-size: 11px; color: #94a3b8; }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+    <div class="mobil-ekran" id="pwa-ekran">
+        <header>
+            <div class="ust-bar">
+                <div class="logo-alan"><h1 style="font-weight: bold; font-size: 15px; color: #1d4ed8;">🛡️ Mobil Otomasyon</h1></div>
+                <div style="font-size:11px; padding:3px 8px; background:#e5e7eb; border-radius:4px; font-weight: 600;">PWA v1.0</div>
+            </div>
+        </header>
+        <main>
+            <div id="ana-sayfa-alani">
+                <div class="profil-ust-zemin">
+                    <div class="profil-logo-yuvarlak" id="pwa-profil-logo-alan"></div>
+                    <div class="profil-acente-adi" id="pwa-acente-adi-text">Acente Yükleniyor</div>
+                    <div class="profil-iletisim-satir">📞 <span id="pwa-acente-tel-text">0000</span></div>
+                    <div class="profil-iletisim-satir">📍 <span id="pwa-acente-adres-text">Adres</span></div>
+                    <!-- ℹ️ Yeni İletişim Bilgileri Rozet Kutusu -->
+                    <div class="profil-sosyal-grid" id="pwa-sosyal-grid-alan"></div>
+                </div>
+
+                <div class="kurumsal-gorsel-alani" id="pwa-kurumsal-gorsel-bloku">
+                    <!-- Dinamik Değişebilir Orta Resim Elemanı -->
+                    <img id="pwa-ana-gorsel-img" class="kurumsal-img" alt="Tanıtım Resmi">
+                    <div class="kurumsal-alt-yazi" id="pwa-slogan-alt-aciklama">Yükleniyor...</div>
+                </div>
+
+                <div class="ikaz-lambasi-alani hidden" id="pwa-ikaz-motoru">
+                    <div class="ikaz-isik"></div>
+                    <div class="ikaz-metin">⚠️ DİKKAT: 14 gün içinde süresi bitecek <span id="ikaz-adet-sayi">0</span> adet poliçeniz mevcuttur!</div>
+                </div>
+
+                <div class="menu-grid-alani">
+                    <div class="menu-grid">
+                        <button type="button" class="btn btn-giris" onclick="document.getElementById('ana-sayfa-alani').classList.add('hidden'); document.getElementById('giris-ekrani').classList.remove('hidden');">➕ Giriş</button>
+                        <a href="arama.html" class="btn btn-arama">🔍 Arama</a>
+                        <a href="istatistik.html" class="btn btn-istatistik">📊 İstatistik</a>
+                        <a href="ayarlar.html" class="btn btn-ayarlar">⚙️ Ayarlar</a>
+                    </div>
+                    <a href="hakkinda.html" class="btn btn-hakkinda">ℹ️ Hakkında</a>
+                </div>
+            </div>
+
+            <!-- Giriş Ekranı Form Bölümü -->
+            <div id="giris-ekrani" class="hidden" style="padding: 15px;">
+                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+                    <button type="button" onclick="document.getElementById('giris-ekrani').classList.add('hidden'); document.getElementById('ana-sayfa-alani').classList.remove('hidden');" style="padding: 6px 12px; background: #e5e7eb; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size:13px;">← Geri</button>
+                    <h2 style="font-size: 14px; font-weight: bold;">Poliçe Girişi</h2>
+                </div>
+                <form action="odeme.html" method="GET">
+                    <div class="form-bolum-baslik">Poliçe Bilgileri</div>
+                    <div class="form-grup"><label>Poliçe No *</label><input type="text" name="policeno" required></div>
+                    <div class="form-grup">
+                        <label>Şirket Adı *</label>
+                        <select name="sirket"><option>Allianz Sigorta</option><option>Anadolu Sigorta</option><option>Doğa Sigorta</option><option>Quick Sigorta</option></select>
+                    </div>
+                    <div class="form-grup">
+                        <label>Sigorta Türü *</label>
+                        <select name="tur"><option>Trafik Sigortası</option><option>Kasko Sigortası</option><option>DASK</option></select>
+                    </div>
+                    <div class="form-grup"><label>Bitiş Tarihi *</label><input type="date" name="bitis" required></div>
+                    <div class="form-bolum-baslik">Müşteri Bilgileri</div>
+                    <div class="form-grup"><label>Sigortalı Adı Soyadı *</label><input type="text" name="sigortali" required></div>
+                    <button type="submit" style="width:100%;padding:14px;background:#1d4ed8;color:white;border:none;border-radius:10px;font-weight:bold;cursor:pointer;">Devam Et →</button>
+                </form>
+            </div>
+        </main>
+        <footer>Sistem Yönetim Paneli © 2026</footer>
+    </div>
+
+    <script>
+        const urlParam = new URLSearchParams(window.location.search);
+        if (urlParam.get('form') === 'acik') {
+            document.getElementById('ana-sayfa-alani').classList.add('hidden');
+            document.getElementById('giris-ekrani').classList.remove('hidden');
+        }
+
+        const nAd = localStorage.getItem("cfg_acenteAd") || "Sedat Sigorta Acentesi";
+        const nImg = localStorage.getItem("cfg_logoImgData") || "";
+        const nGizle = localStorage.getItem("cfg_logoGizle") === "true";
+        const anaResmData = localStorage.getItem("cfg_anaResmData") || "";
+
+        document.getElementById("pwa-acente-adi-text").innerText = nAd;
+        document.getElementById("pwa-acente-tel-text").innerText = nTel;
+        document.getElementById("pwa-acente-adres-text").innerText = nAdres;
+        document.getElementById("pwa-slogan-alt-aciklama").innerText = nSloAlt;
+
+        const lKap = document.getElementById("pwa-profil-logo-alan");
+        if (nGizle) { 
+            lKap.style.display = "none"; 
+        } else {
+            lKap.style.display = "flex";
+            if (nImg) { 
+                lKap.innerHTML = '<img src="' + nImg + '" style="width:' + nG + 'px; height:' + nY + 'px; object-fit:cover; border-radius:50%;">'; 
+            } else { 
+                lKap.innerHTML = '<div class="logo-varsayilan">' + nAd.charAt(0).toUpperCase() + '</div>'; 
+            }
+        }
+
+        const anaResmElement = document.getElementById("pwa-ana-gorsel-img");
+        if (anaResmData) {
+            anaResmElement.src = anaResmData;
+            anaResmElement.style.display = "block";
+        } else {
+            anaResmElement.src = "https://unsplash.com";
+        }
+
+        const testVeriTabani = [{ kalanGun: 14 }];
+        let ikazAdet = 0;
+        testVeriTabani.forEach(p => { 
+            if(p.kalanGun > 0 && p.kalanGun <= 14) ikazAdet++; 
+        });
+        
+        const ikazKutusu = document.getElementById("pwa-ikaz-motoru");
+        if(ikazAdet > 0) {
+            ikazKutusu.classList.remove("hidden");
+            document.getElementById("ikaz-adet-sayi").innerText = ikazAdet;
+        } else { 
+            ikazKutusu.classList.add("hidden"); 
+        }
+
+        document.getElementById("pwa-ekran").style.backgroundColor = rArka;
+
+        const sosList = JSON.parse(localStorage.getItem("cfg_sosyalMedyaListesi")) || [
+            {tur: "Instagram", veri: "@sedatsigorta"},
+            {tur: "Facebook", veri: "://facebook.com"}
+        ];
+        const sosAlan = document.getElementById("pwa-sosyal-grid-alan");
+        sosAlan.innerHTML = "";
+        if (!sosGizle) {
+            sosList.forEach(item => {
+                let simge = "🌐 ";
+                if (item.tur === "Instagram") simge = "📸 ";
+                if (item.tur === "Facebook") simge = "🔵 ";
+                if (item.tur === "E-Posta") simge = "✉️ ";
+                sosAlan.innerHTML += '<span class="sosyal-rozet">' + simge + item.veri + '</span>';
+            });
+        }
+    </script>
+        <script>
+        // 🔮 PWA Kurulum ve Mobil Entegrasyon Aktivasyon Motoru
+        if ("serviceWorker" in navigator) {
+            window.addEventListener("load", () => {
+                navigator.serviceWorker.register("sw.js")
+                    .then(reg => console.log("Mobil PWA Başarıyla Devrede!"))
+                    .catch(err => console.log("Hata:", err));
+            });
+        }
+    </script>
+</body>
+</html>

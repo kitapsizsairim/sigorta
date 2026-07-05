@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hakkında Künyesi</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        body { background: #f0f2f5; display: flex; justify-content: center; min-height: 100vh; padding: 10px 0; }
+        .mobil-ekran { width: 100%; max-width: 430px; background: #ffffff; box-shadow: 0 4px 20px rgba(0,0,0,0.1); border-radius: 12px; display: block; padding-bottom: 30px; }
+        header { border-bottom: 1px solid #e5e7eb; padding: 15px; }
+        main { padding: 15px; display: block; width: 100%; }
+        .form-bolum-baslik { font-size: 13px; font-weight: bold; color: #ec4899; text-transform: uppercase; margin: 20px 0 12px 0; border-bottom: 2px solid #2563eb; padding-bottom: 3px; }
+        .kunye-kart { background: #fff1f2; border: 1px solid #fecdd3; border-radius: 10px; padding: 12px; margin-bottom: 15px; }
+        .kunye-satir { display: flex; justify-content: space-between; padding: 8px 4px; border-bottom: 1px dashed #e2e8f0; font-size: 13px; }
+        .kunye-satir:last-child { border-bottom: none; }
+        .kunye-sol { font-weight: bold; color: #475569; }
+        .not-kutusu { background: #f8fafc; border: 1px solid #e2e8f0; padding: 12px; border-radius: 8px; font-size: 13px; color: #475569; font-style: italic; line-height: 1.5; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="mobil-ekran">
+        <header><h1 style="font-weight: bold; font-size: 16px; color:#ec4899;">ℹ️ Program Hakkında Künyesi</h1></header>
+        <main>
+            <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+                <button type="button" onclick="location.href='index.html';" style="padding: 6px 12px; background: #e5e7eb; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size:13px;">← Ana Menü</button>
+                <h2 style="font-size: 14px; font-weight: bold;" id="lbl-acente">Güven Sigorta</h2>
+            </div>
+
+            <div class="form-bolum-baslik">Yazılım & Sürüm Bilgisi</div>
+            <div class="kunye-kart">
+                <div class="kunye-satir"><span class="kunye-sol">💻 Program Adı:</span><span id="d-progAd">Acente Takip</span></div>
+                <div class="kunye-satir"><span class="kunye-sol">🚀 Versiyon:</span><span id="d-progVersiyon">v1.0.0</span></div>
+            </div>
+
+            <div class="form-bolum-baslik">Geliştirici İletişim Kanalları</div>
+            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px; margin-bottom: 15px;">
+                <div class="kunye-satir"><span class="kunye-sol">👤 Yapımcı:</span><span id="d-yapimci">Ahmet</span></div>
+                <div class="kunye-satir"><span class="kunye-sol">📞 Cep Telefonu:</span><span id="d-yapimciTel">0532...</span></div>
+                <div class="kunye-satir"><span class="kunye-sol">🌐 Web Adresi:</span><span id="d-web">www...</span></div>
+                <div class="kunye-satir"><span class="kunye-sol">📘 Facebook:</span><span id="d-facebook">fb...</span></div>
+                <div class="kunye-satir"><span class="kunye-sol">📷 Instagram:</span><span id="d-instagram">@...</span></div>
+            </div>
+
+            <div class="form-bolum-baslik">Geliştirici Notları</div>
+            <div class="not-kutusu" id="d-notlar">Not bulunamadı.</div>
+        </main>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            document.getElementById("lbl-acente").innerText = 
+                localStorage.getItem("cfg_acenteAd") || "Güven Sigorta";
+            document.getElementById("d-progAd").innerText = 
+                localStorage.getItem("h_progAd") || "Acente Takip Sistemi";
+            document.getElementById("d-progVersiyon").innerText = 
+                localStorage.getItem("h_progVersiyon") || "v1.0.0 PWA";
+            document.getElementById("d-yapimci").innerText = 
+                localStorage.getItem("h_yapimci") || "Ahmet Yılmaz";
+            document.getElementById("d-yapimciTel").innerText = 
+                localStorage.getItem("h_yapimciTel") || "0532 999 88 77";
+            document.getElementById("d-web").innerText = 
+                localStorage.getItem("h_web") || "://acenteasistani.com";
+            document.getElementById("d-facebook").innerText = 
+                localStorage.getItem("h_facebook") || "://facebook.com";
+            document.getElementById("d-instagram").innerText = 
+                localStorage.getItem("h_instagram") || "@acentepwa";
+            document.getElementById("d-notlar").innerText = 
+                localStorage.getItem("h_notlar") || "Acenteler için özel tasarlanmış hafif takip otomasyonu.";
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acente Ayarları</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        body { background: #f0f2f5; display: flex; justify-content: center; min-height: 100vh; padding: 10px 0; }
+        .mobil-ekran { width: 100%; max-width: 430px; background: #ffffff; box-shadow: 0 4px 20px rgba(0,0,0,0.1); border-radius: 12px; padding: 15px; }
+        .form-bolum-baslik { font-size: 13px; font-weight: bold; color: #1d4ed8; text-transform: uppercase; margin: 25px 0 12px 0; border-bottom: 2px solid #ef4444; padding-bottom: 3px; }
+        .satir-iki { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .form-grup { margin-bottom: 12px; text-align: left; }
+        .form-grup label { display: block; font-size: 12px; font-weight: bold; margin-bottom: 4px; color: #4b5563; }
+        .form-grup input, .form-grup select, .form-grup textarea { width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 13px; outline: none; }
+        .onizleme-kutusu { width: 65px; height: 65px; border: 1px solid #cbd5e1; border-radius: 6px; display: flex; align-items: center; justify-content: center; margin: 5px auto; background: #f8fafc; overflow: hidden; }
+        .onizleme-img { width: 100%; height: 100%; object-fit: cover; }
+        .liste-eleman { display: flex; justify-content: space-between; align-items: center; background: #f8fafc; border: 1px solid #e2e8f0; padding: 8px; border-radius: 6px; margin-bottom: 6px; font-size: 12px; }
+        .btn-sil { background: #dc2626; color: white; border: none; padding: 2px 8px; border-radius: 4px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="mobil-ekran">
+        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+            <button type="button" onclick="location.href='index.html';" style="padding: 6px 12px; background: #e5e7eb; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size:13px;">← Menü</button>
+            <h2 style="font-size: 14px; font-weight: bold;">Uygulama Özelleştirme</h2>
+        </div>
+
+        <div class="form-bolum-baslik">Acente & Logo Ayarları</div>
+        <div class="form-grup"><label>Acente İsmi / Marka Adı</label><input type="text" id="cfg-acenteAd"></div>
+        <div class="form-grup">
+            <label>Logo Görünüm Durumu</label>
+            <select id="cfg-logoGizle"><option value="false">Açık</option><option value="true">Gizli</option></select>
+        </div>
+
+        <div style="background: #f8fafc; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0; margin-bottom: 12px;">
+            <div class="form-grup"><label>Logo Resmi Seç</label><input type="file" id="cfg-logoFile" accept="image/*" onchange="logoResmiIsle(this)"></div>
+            <div class="satir-iki">
+                <div><label>Genişlik (px)</label><input type="number" id="cfg-logoGenislik" value="35" oninput="canliOnizlemeKutusu()"></div>
+                <div><label>Yükseklik (px)</label><input type="number" id="cfg-logoYukseklik" value="35" oninput="canliOnizlemeKutusu()"></div>
+            </div>
+            <div class="onizleme-kutusu" id="logo-onizleme-kutusu"></div>
+        </div>
+
+        <!-- 🖼️ YENİ: ORTA ANA TANITIM RESMİ DÜZENLEME MODÜLÜ -->
+        <div class="form-bolum-baslik">Ana Sayfa Resim Ayarı</div>
+        <div style="background: #f8fafc; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0; margin-bottom: 12px;">
+            <div class="form-grup">
+                <label>Yeni Ana Görsel Seç (Geniş Aile/Acente Resmi)</label>
+                <input type="file" id="cfg-anaResmFile" accept="image/*" onchange="anaResmiIsle(this)">
+            </div>
+            <div class="onizleme-kutusu" id="ana-resm-onizleme" style="width: 100%; height: 80px;">Görsel Yok</div>
+        </div>
+
+        <div class="form-grup"><label>Telefon Numarası</label><input type="text" id="cfg-acenteTel"></div>
+        <div class="form-grup"><label>Açık Adres</label><textarea id="cfg-acenteAdres" style="height:45px; resize:none;"></textarea></div>
+
+        <div class="form-bolum-baslik">Slogan Kartı Düzeni</div>
+        <div class="form-grup"><label>Görsel Altı Açıklama Yazısı</label><input type="text" id="cfg-sloganAlt"></div>
+
+        <div class="form-bolum-baslik">Zemin Tasarımı</div>
+        <div class="form-grup"><label>Ana Ekran Arka Planı</label><input type="color" id="cfg-renkArkaplan"></div>
+
+        <div class="form-bolum-baslik">Sosyal Medya Bilgi Yönetimi</div>
+        <div class="form-grup"><label>Sosyal Medya Gösterimi</label><select id="cfg-sosyalGizle"><option value="false">Açık</option><option value="true">Gizli</option></select></div>
+        <div style="background:#f1f5f9; padding:10px; border-radius:8px; margin-bottom:12px;">
+            <div style="display:grid; grid-template-columns:1fr 1.5fr; gap:8px; margin-bottom:8px;">
+                <select id="yeni-sosyal-tur"><option>Instagram</option><option>Facebook</option><option>E-Posta</option></select>
+                <input type="text" id="yeni-sosyal-veri" placeholder="Kullanıcı adı veya link...">
+            </div>
+            <button type="button" onclick="sosyalBilgiEkle()" style="width:100%; padding:6px; background:#2563eb; color:white; border:none; border-radius:4px; font-weight:bold; cursor:pointer; font-size:12px;">➕ Yeni Bilgi Satırı Ekle</button>
+        </div>
+        <div id="sosyal-medya-listeleme-alani"></div>
+
+        <button type="button" onclick="ayarlariKaydet()" style="width: 100%; padding: 14px; background: #059669; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 15px; font-size:14px;">💾 Değişiklikleri Kaydet</button>
+    </div>
+
+    <script>
+        let dinamikSosyalListesi = [];
+        let base64LogoData = "";
+        
+        // Ana resim tamponu
+        let base64AnaResmData = "";
+
+        document.addEventListener("DOMContentLoaded", () => {
+            document.getElementById("cfg-acenteAd").value = localStorage.getItem("cfg_acenteAd") || "Sedat Sigorta Acentesi";
+            document.getElementById("cfg-logoGizle").value = localStorage.getItem("cfg_logoGizle") || "false";
+            document.getElementById("cfg-logoGenislik").value = localStorage.getItem("cfg_logoGenislik") || "35";
+            document.getElementById("cfg-logoYukseklik").value = localStorage.getItem("cfg_logoYukseklik") || "35";
+            document.getElementById("cfg-acenteTel").value = localStorage.getItem("cfg_acenteTel") || "0555 123 45 67";
+            document.getElementById("cfg-acenteAdres").value = localStorage.getItem("cfg_acenteAdres") || "Merkez Mah. Atatürk Cad. No:123 İstanbul";
+            document.getElementById("cfg-sloganAlt").value = localStorage.getItem("cfg_sloganAlt") || "Poliçelerinizi kolayca takip edin, müşterilerinize en iyi hizmeti sunun.";
+            document.getElementById("cfg-sosyalGizle").value = localStorage.getItem("cfg_sosyalGizle") || "false";
+            document.getElementById("cfg-renkArkaplan").value = localStorage.getItem("cfg_renkArkaplan") || "#ffffff";
+
+            base64LogoData = localStorage.getItem("cfg_logoImgData") || "";
+            base64AnaResmData = localStorage.getItem("cfg_anaResmData") || "";
+            dinamikSosyalListesi = JSON.parse(localStorage.getItem("cfg_sosyalMedyaListesi")) || [];
+            
+            canliOnizlemeKutusu();
+            sosyalListeyiYenile();
+        });
+
+        function canliOnizlemeKutusu() {
+            const oKutu = document.getElementById("logo-onizleme-kutusu");
+            const g = document.getElementById("cfg-logoGenislik").value || "35";
+            const y = document.getElementById("cfg-logoYukseklik").value || "35";
+            if(base64LogoData) { oKutu.innerHTML = '<img src="' + base64LogoData + '" class="onizleme-img" style="width:' + g + 'px; height:' + y + 'px;">'; }
+            else { oKutu.innerHTML = '<span style="font-size:10px; color:#94a3b8;">Yok</span>'; }
+
+            // Ana Resim Önizleme Kontrolü
+            const aKutu = document.getElementById("ana-resm-onizleme");
+            if(base64AnaResmData) {
+                aKutu.innerHTML = '<img src="' + base64AnaResmData + '" class="onizleme-img">';
+            } else {
+                aKutu.innerHTML = 'Görsel Yok';
+            }
+        }
+
+        function logoResmiIsle(input) {
+            if (input.files && input.files[0]) {
+                const okuyucu = new FileReader();
+                okuyucu.onload = function(e) { base64LogoData = e.target.result; canliOnizlemeKutusu(); };
+                okuyucu.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // Ana resmi Base64 formatına çeviren işlemci
+        function anaResmiIsle(input) {
+            if (input.files && input.files[0]) {
+                const okuyucu = new FileReader();
+                okuyucu.onload = function(e) {
+                    base64AnaResmData = e.target.result;
+                    canliOnizlemeKutusu();
+                };
+                okuyucu.readAsDataURL(input.files[0]);
+            }
+        }
+
+function sosyalBilgiEkle() {
+            const tur = document.getElementById("yeni-sosyal-tur").value;
+            const veri = document.getElementById("yeni-sosyal-veri").value.trim();
+            if(!veri) return;
+            dinamikSosyalListesi.push({tur: tur, veri: veri});
+            document.getElementById("yeni-sosyal-veri").value = "";
+            canliOnizlemeKutusu();
+            sosyalListeyiYenile();
+        }
+
+        function canliOnizlemeKutusu() {
+            const oKutu = document.getElementById("logo-onizleme-kutusu");
+            const g = document.getElementById("cfg-logoGenislik").value || "35";
+            const y = document.getElementById("cfg-logoYukseklik").value || "35";
+            if(base64LogoData) { 
+                oKutu.innerHTML = '<img src="' + base64LogoData + '" class="onizleme-img" style="width:' + g + 'px; height:' + y + 'px;">'; 
+            } else { 
+                oKutu.innerHTML = '<span style="font-size:10px; color:#94a3b8;">Yok</span>'; 
+            }
+
+            const aKutu = document.getElementById("ana-resm-onizleme");
+            if(base64AnaResmData) {
+                aKutu.innerHTML = '<img src="' + base64AnaResmData + '" class="onizleme-img">';
+            } else {
+                aKutu.innerHTML = 'Görsel Yok';
+            }
+        }
+
+        function logoResmiIsle(input) {
+            if (input.files && input.files[0]) {
+                const okuyucu = new FileReader();
+                okuyucu.onload = function(e) { 
+                    base64LogoData = e.target.result; 
+                    canliOnizlemeKutusu(); 
+                };
+                okuyucu.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function anaResmiIsle(input) {
+            if (input.files && input.files[0]) {
+                const okuyucu = new FileReader();
+                okuyucu.onload = function(e) {
+                    base64AnaResmData = e.target.result;
+                    canliOnizlemeKutusu();
+                };
+                okuyucu.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function sosyalBilgiEkle() {
+            const tur = document.getElementById("yeni-sosyal-tur").value;
+            const veri = document.getElementById("yeni-sosyal-veri").value.trim();
+            if(!veri) return;
+            dinamikSosyalListesi.push({tur: tur, veri: veri});
+            document.getElementById("yeni-sosyal-veri").value = "";
+            sosyalListeyiYenile();
+        }
+
+        function sosyalBilgiSil(index) { 
+            dinamikSosyalListesi.splice(index, 1); 
+            sosyalListeyiYenile(); 
+        }
+
+        function sosyalListeyiYenile() {
+            const alan = document.getElementById("sosyal-medya-listeleme-alani"); 
+            alan.innerHTML = "";
+            dinamikSosyalListesi.forEach((item, index) => {
+                alan.innerHTML += '<div class="liste-eleman"><span><strong>' + item.tur + ':</strong> ' + item.veri + '</span><button type="button" class="btn-sil" onclick="sosyalBilgiSil(' + index + ')">Sil</button></div>';
+            });
+        }
+
+        function ayarlariKaydet() {
+            localStorage.setItem("cfg_acenteAd", document.getElementById("cfg-acenteAd").value);
+            localStorage.setItem("cfg_logoTuru", "RESIM");
+            localStorage.setItem("cfg_logoGizle", document.getElementById("cfg-logoGizle").value);
+            localStorage.setItem("cfg_logoImgData", base64LogoData);
+            localStorage.setItem("cfg_anaResmData", base64AnaResmData);
+            localStorage.setItem("cfg_logoGenislik", document.getElementById("cfg-logoGenislik").value);
+            localStorage.setItem("cfg_logoYukseklik", document.getElementById("cfg-logoYukseklik").value);
+            localStorage.setItem("cfg_acenteTel", document.getElementById("cfg-acenteTel").value);
+            localStorage.setItem("cfg_acenteAdres", document.getElementById("cfg-acenteAdres").value);
+            localStorage.setItem("cfg_sloganAlt", document.getElementById("cfg-sloganAlt").value);
+            localStorage.setItem("cfg_sosyalGizle", document.getElementById("cfg-sosyalGizle").value);
+            localStorage.setItem("cfg_renkArkaplan", document.getElementById("cfg-renkArkaplan").value);
+            localStorage.setItem("cfg_sosyalMedyaListesi", JSON.stringify(dinamikSosyalListesi));
+
+            alert("Ayarlar başarıyla güncellendi.");
+            location.href = "index.html";
+        }
+    </script>
+</body>
+</html>

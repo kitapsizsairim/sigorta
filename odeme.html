@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poliçe Girişi - Sayfa 2</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        body { background: #f0f2f5; display: flex; justify-content: center; min-height: 100vh; padding: 10px 0; }
+        .mobil-ekran { width: 100%; max-width: 430px; background: #ffffff; box-shadow: 0 4px 20px rgba(0,0,0,0.1); border-radius: 12px; display: block; padding-bottom: 30px; }
+        header { border-bottom: 1px solid #e5e7eb; padding: 15px; }
+        main { padding: 15px; display: block; width: 100%; }
+        .form-bolum-baslik { font-size: 13px; font-weight: bold; color: #1d4ed8; text-transform: uppercase; margin: 25px 0 12px 0; border-bottom: 2px solid #ef4444; padding-bottom: 3px; text-align: left; }
+        .form-grup { margin-bottom: 14px; text-align: left; width: 100%; display: block; }
+        .form-grup label { display: block; font-size: 12px; font-weight: bold; margin-bottom: 5px; color: #4b5563; }
+        .form-grup input, .form-grup select, .form-grup textarea { width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 13px; outline: none; }
+        footer { padding: 15px; background: #f9fafb; border-top: 1px solid #e5e7eb; text-align: center; margin-top: 20px; border-radius: 0 0 12px 12px; }
+    </style>
+</head>
+<body>
+    <div class="mobil-ekran">
+        <header><h1 style="font-weight: bold; font-size: 16px; color:#1d4ed8;" id="odeme-acente-adi">Güven Sigorta</h1></header>
+        <main>
+            <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+                <button type="button" onclick="location.href='index.html?form=acik';" style="padding: 6px 12px; background: #e5e7eb; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size:13px;">← Geri Dön</button>
+                <h2 style="font-size: 14px; font-weight: bold;">Poliçe Detayları (Sayfa 2)</h2>
+            </div>
+            <form onsubmit="event.preventDefault(); alert('Harika! Tüm poliçe verileri sisteme başarıyla işlendi.'); location.href='index.html';">
+                
+                <div class="form-bolum-baslik">Müşteri Detay Bilgileri</div>
+                <div class="form-grup"><label>Müşteri TC / Vergi No *</label><input type="number" required></div>
+                <div class="form-grup"><label>Doğum Tarihi</label><input type="date"></div>
+                <div class="form-grup"><label>Cep Telefonu Girişi (Birden fazla ise virgülle ayırın)</label><input type="text" placeholder="Örn: 0532..., 0542..."></div>
+
+                <div class="form-bolum-baslik">Araç & Branş Detayları</div>
+                <div class="form-grup"><label>Plaka (Trafik ve Kasko İçin)</label><input type="text" placeholder="Örn: 34ABC123"></div>
+                <div class="form-grup"><label>Araç Marka ve Tipi</label><input type="text" placeholder="Örn: Renault Megane"></div>
+                <div class="form-grup"><label>Şasi No</label><input type="text" placeholder="17 Haneli Kod"></div>
+                <div class="form-grup"><label>Motor No</label><input type="text"></div>
+                <div class="form-grup"><label>DASK için UAVT Girişi</label><input type="text" placeholder="10 Haneli Adres Kodu"></div>
+                <div class="form-grup"><label>Adres Girişi</label><textarea style="height:55px; resize:none;" placeholder="Açık adres..."></textarea></div>
+
+                <div class="form-bolum-baslik">Muhasebe & Ödeme Bilgileri</div>
+                <div class="form-grup"><label>Prim Tutarı (₺) *</label><input type="number" required value="0"></div>
+                <div class="form-grup"><label>İndirim Tutarı (₺)</label><input type="number" value="0"></div>
+                <div class="form-grup"><label>Borç / Alacak Tutarı (₺)</label><input type="number" placeholder="+ Borç / - Alacak" value="0"></div>
+                <div class="form-grup"><label>İade Tutarı (₺)</label><input type="number" value="0"></div>
+                <div class="form-grup">
+                    <label>Ödeme Türü *</label>
+                    <select><option>Nakit</option><option>Kredi Kartı</option></select>
+                </div>
+                <div class="form-grup"><label>Kredi Kartı: Kart Sahibi Adı Soyadı</label><input type="text" placeholder="Kart üzerindeki isim"></div>
+                <div class="form-grup"><label>Kredi Kartı Bilgisi Girişi</label><input type="text" placeholder="**** **** **** 1234"></div>
+                <div class="form-grup"><label>Kartın Ait Olduğu Banka</label><input type="text" placeholder="Örn: Garanti"></div>
+
+                <div class="form-bolum-baslik">Ek Bilgiler</div>
+                <div class="form-grup"><label>Referans / Aracı</label><input type="text" placeholder="Getiren Kişi"></div>
+                <div class="form-grup"><label>Notlar</label><textarea style="height:55px; resize:none;"></textarea></div>
+
+                <div style="display: flex; gap: 10px; margin-top: 25px;">
+                    <button type="submit" style="flex: 2; padding: 14px; background: #059669; color: white; border: none; border-radius: 10px; font-weight: bold; font-size: 14px; cursor: pointer;">💾 Poliçeyi Kaydet</button>
+                    <button type="button" onclick="if(confirm('Tüm poliçe verileri temizlenecektir?')){ location.href='index.html'; }" style="flex: 1; padding: 14px; background: #dc2626; color: white; border: none; border-radius: 10px; font-weight: bold; font-size: 14px; cursor: pointer;">❌ Poliçe Sil</button>
+                </div>
+            </form>
+        </main>
+    </div>
+    <script>
+        const yAdForm = localStorage.getItem("cfg_acenteAd") || "Güven Sigorta";
+        document.getElementById("odeme-acente-adi").innerText = yAdForm;
+    </script>
+</body>
+</html>
