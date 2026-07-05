@@ -3,6 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#2563eb">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Sigorta PWA">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icons/icon-192.svg" type="image/svg+xml">
     <title>Acente Takip PWA</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
@@ -50,13 +56,19 @@
         .form-grup input, .form-grup select { width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 13px; outline: none; }
         footer { padding: 12px; background: #f9fafb; border-top: 1px solid #e5e7eb; text-align: center; border-radius: 0 0 12px 12px; font-size: 11px; color: #94a3b8; }
         .hidden { display: none !important; }
+        /* SW güncelleme bildirim çubuğu */
+        #sw-update-banner { position: fixed; left: 50%; transform: translateX(-50%); bottom: 18px; background:#111827; color: #fff; padding:10px 14px; border-radius:10px; box-shadow:0 6px 20px rgba(0,0,0,0.25); display:flex; gap:10px; align-items:center; z-index:9999; font-size:13px; }
+        #sw-update-banner button { background:#10b981; color:#fff; border:none; padding:6px 10px; border-radius:8px; cursor:pointer; font-weight:700; }
     </style>
 </head>
 <body>
     <div class="mobil-ekran" id="pwa-ekran">
         <header>
-            <div class="ust-bar">
-                <div class="logo-alan"><h1 style="font-weight: bold; font-size: 15px; color: #1d4ed8;">🛡️ Mobil Otomasyon</h1></div>
+            <div class="ust-bar" style="align-items: center; gap: 10px;">
+                <div class="logo-alan" style="display:flex; align-items:center; gap:10px;">
+                    <img src="icons/icon-192.svg" alt="Logo" style="width:26px; height:26px;">
+                    <h1 style="font-weight: bold; font-size: 15px; color: #1d4ed8; margin:0;">Poliçe Takip Programı</h1>
+                </div>
                 <div style="font-size:11px; padding:3px 8px; background:#e5e7eb; border-radius:4px; font-weight: 600;">PWA v1.0</div>
             </div>
         </header>
@@ -104,15 +116,96 @@
                     <div class="form-grup"><label>Poliçe No *</label><input type="text" name="policeno" required></div>
                     <div class="form-grup">
                         <label>Şirket Adı *</label>
-                        <select name="sirket"><option>Allianz Sigorta</option><option>Anadolu Sigorta</option><option>Doğa Sigorta</option><option>Quick Sigorta</option></select>
+                        <select name="sirket" required>
+                            <option value="">Seçiniz</option>
+                            <option>Acıbadem</option>
+                            <option>Acn Türk</option>
+                            <option>Aegon</option>
+                            <option>Ak Sigorta</option>
+                            <option>Allianz</option>
+                            <option>Ana Sigorta</option>
+                            <option>Anadolu</option>
+                            <option>Ankara</option>
+                            <option>Arex</option>
+                            <option>Atlas</option>
+                            <option>Aveon</option>
+                            <option>Axa</option>
+                            <option>Bereket</option>
+                            <option>Corpus</option>
+                            <option>Doğa</option>
+                            <option>Emaa</option>
+                            <option>Ethica</option>
+                            <option>Eureko</option>
+                            <option>Gulf</option>
+                            <option>Hdi</option>
+                            <option>Hepiyi</option>
+                            <option>Koru</option>
+                            <option>Magdeburger</option>
+                            <option>Mapfre</option>
+                            <option>Neova</option>
+                            <option>Orient</option>
+                            <option>Quick</option>
+                            <option>Ray Sigorta</option>
+                            <option>Referans</option>
+                            <option>Sompo</option>
+                            <option>Şeker</option>
+                            <option>Türk Nippon</option>
+                            <option>Türkiye</option>
+                            <option>Türkiye Katılım</option>
+                            <option>Unico</option>
+                            <option>Zürih</option>
+                        </select>
                     </div>
                     <div class="form-grup">
                         <label>Sigorta Türü *</label>
-                        <select name="tur"><option>Trafik Sigortası</option><option>Kasko Sigortası</option><option>DASK</option></select>
+                        <select name="tur" required>
+                            <option value="">Seçiniz</option>
+                            <option>Trafik</option>
+                            <option>Kasko</option>
+                            <option>İMM</option>
+                            <option>Yol Yardımı</option>
+                            <option>Dask</option>
+                            <option>Konut</option>
+                            <option>İşyeri</option>
+                            <option>Yangın</option>
+                            <option>Tamamlayıcı Sağlık</option>
+                            <option>Özel Sağlık</option>
+                            <option>Hayat Sigortası</option>
+                            <option>Ferdi Kaza</option>
+                            <option>Seyahat Sağlık</option>
+                            <option>Nakliyat</option>
+                            <option>Tarsim</option>
+                            <option>All-Risk</option>
+                            <option>Mesleki Sorumluluk</option>
+                        </select>
                     </div>
+                    <div class="form-grup"><label>Tanzim Tarihi *</label><input type="date" name="tanzim" required></div>
+                    <div class="form-grup"><label>Başlangıç Tarihi *</label><input type="date" name="baslangic" required></div>
                     <div class="form-grup"><label>Bitiş Tarihi *</label><input type="date" name="bitis" required></div>
+                    <div class="form-grup"><label>Plaka</label><input type="text" name="plaka" placeholder="Örn: 34ABC123"></div>
+                    <div class="form-grup"><label>Belge Seri No</label><input type="text" name="belgeSeriNo" placeholder="Örn: AB123456"></div>
+                    <div class="form-grup">
+                        <label>Poliçe Durumu</label>
+                        <select name="durum">
+                            <option value="Aktif">Aktif</option>
+                            <option value="İptal">İptal</option>
+                            <option value="Süresi Bitmiş">Süresi Bitmiş</option>
+                        </select>
+                    </div>
+                    <div class="form-grup">
+                        <label>Sigorta Süresi</label>
+                        <select name="sure">
+                            <option value="Yıllık">Yıllık</option>
+                            <option value="2 Aylık">2 Aylık</option>
+                            <option value="4 Aylık">4 Aylık</option>
+                            <option value="6 Aylık">6 Aylık</option>
+                        </select>
+                    </div>
                     <div class="form-bolum-baslik">Müşteri Bilgileri</div>
                     <div class="form-grup"><label>Sigortalı Adı Soyadı *</label><input type="text" name="sigortali" required></div>
+                    <div class="form-grup"><label>Sigorta Ettiren Adı Soyadı</label><input type="text" name="ettirenAdSoyad" placeholder="Ad Soyad"></div>
+                    <div class="form-grup"><label>Sigorta Ettiren Cep Telefonu</label><input type="text" name="ettirenTelefon" placeholder="Örn: 0532 123 45 67"></div>
+                    <div class="form-grup"><label>Müşteri Cep Telefonları</label><input type="text" name="telefonlar" placeholder="Birden fazla ise virgülle ayırın"></div>
                     <button type="submit" style="width:100%;padding:14px;background:#1d4ed8;color:white;border:none;border-radius:10px;font-weight:bold;cursor:pointer;">Devam Et →</button>
                 </form>
             </div>
@@ -130,11 +223,22 @@
         const nAd = localStorage.getItem("cfg_acenteAd") || "Sedat Sigorta Acentesi";
         const nImg = localStorage.getItem("cfg_logoImgData") || "";
         const nGizle = localStorage.getItem("cfg_logoGizle") === "true";
-        const anaResmData = localStorage.getItem("cfg_anaResmData") || "";
+        const anaResmData = localStorage.getItem("cfg_anaResmData") || "nidirilenler/ana-tanitim-gorseli.svg";
+        const nTel = localStorage.getItem("cfg_acenteTel") || "0555 123 45 67";
+        const nAdres = localStorage.getItem("cfg_acenteAdres") || "Merkez Mah. Atatürk Cad. No:123 İstanbul";
+        const nSloAlt = localStorage.getItem("cfg_sloganAlt") || localStorage.getItem("h_slogan") || "Poliçelerinizi kolayca takip edin, müşterilerinize en iyi hizmeti sunun.";
+        const appBaslik = localStorage.getItem("h_progAd") || "Mobil Otomasyon";
+        const appVersiyon = localStorage.getItem("h_progVersiyon") || "v1.0.0 PWA";
+        const sosGizle = localStorage.getItem("cfg_sosyalGizle") === "true";
+        const rArka = localStorage.getItem("cfg_renkArkaplan") || "#ffffff";
+        const nG = parseInt(localStorage.getItem("cfg_logoGenislik") || "35", 10);
+        const nY = parseInt(localStorage.getItem("cfg_logoYukseklik") || "35", 10);
 
         document.getElementById("pwa-acente-adi-text").innerText = nAd;
         document.getElementById("pwa-acente-tel-text").innerText = nTel;
         document.getElementById("pwa-acente-adres-text").innerText = nAdres;
+        document.getElementById("pwa-app-baslik-text").innerText = appBaslik;
+        document.getElementById("pwa-app-versiyon-text").innerText = appVersiyon;
         document.getElementById("pwa-slogan-alt-aciklama").innerText = nSloAlt;
 
         const lKap = document.getElementById("pwa-profil-logo-alan");
@@ -154,7 +258,7 @@
             anaResmElement.src = anaResmData;
             anaResmElement.style.display = "block";
         } else {
-            anaResmElement.src = "https://unsplash.com";
+            anaResmElement.src = "nidirilenler/ana-tanitim-gorseli.svg";
         }
 
         const testVeriTabani = [{ kalanGun: 14 }];
@@ -173,31 +277,88 @@
 
         document.getElementById("pwa-ekran").style.backgroundColor = rArka;
 
-        const sosList = JSON.parse(localStorage.getItem("cfg_sosyalMedyaListesi")) || [
-            {tur: "Instagram", veri: "@sedatsigorta"},
-            {tur: "Facebook", veri: "://facebook.com"}
+        const cfgSosyalListesi = JSON.parse(localStorage.getItem("cfg_sosyalMedyaListesi") || "null") || [];
+        const sosyalBilgiler = [
+            {tur: "Facebook", veri: localStorage.getItem("h_facebook") || cfgSosyalListesi.find(i => i.tur === "Facebook")?.veri || "facebook.com/sigortapwa"},
+            {tur: "Instagram", veri: localStorage.getItem("h_instagram") || cfgSosyalListesi.find(i => i.tur === "Instagram")?.veri || "@sigortapwa"},
+            {tur: "E-Posta", veri: localStorage.getItem("h_eposta") || localStorage.getItem("cfg_acenteMail") || cfgSosyalListesi.find(i => i.tur === "E-Posta")?.veri || "iletisim@sigortapwa.com"},
+            {tur: "Web", veri: localStorage.getItem("h_web") || cfgSosyalListesi.find(i => i.tur === "Web")?.veri || "www.sigortapwa.com"}
         ];
         const sosAlan = document.getElementById("pwa-sosyal-grid-alan");
         sosAlan.innerHTML = "";
         if (!sosGizle) {
-            sosList.forEach(item => {
+            sosyalBilgiler.forEach(item => {
+                if (!item.veri) return;
                 let simge = "🌐 ";
-                if (item.tur === "Instagram") simge = "📸 ";
+                if (item.tur === "Instagram") simge = "📷 ";
                 if (item.tur === "Facebook") simge = "🔵 ";
                 if (item.tur === "E-Posta") simge = "✉️ ";
                 sosAlan.innerHTML += '<span class="sosyal-rozet">' + simge + item.veri + '</span>';
             });
         }
-    </script>
-        <script>
-        // 🔮 PWA Kurulum ve Mobil Entegrasyon Aktivasyon Motoru
-        if ("serviceWorker" in navigator) {
-            window.addEventListener("load", () => {
-                navigator.serviceWorker.register("sw.js")
-                    .then(reg => console.log("Mobil PWA Başarıyla Devrede!"))
-                    .catch(err => console.log("Hata:", err));
+
+        const girisForm = document.querySelector('#giris-ekrani form');
+        if (girisForm) {
+            const kayitKodu = 'sigorta-giris-form';
+            const kayitli = JSON.parse(localStorage.getItem(kayitKodu) || '{}');
+            Array.from(girisForm.elements).forEach(el => {
+                if (!el.name || el.tagName === 'BUTTON') return;
+                if (kayitli[el.name] !== undefined) {
+                    if (el.type === 'checkbox') el.checked = kayitli[el.name];
+                    else el.value = kayitli[el.name];
+                }
+                const kaydet = () => {
+                    const yeni = {};
+                    Array.from(girisForm.elements).forEach(item => {
+                        if (!item.name || item.tagName === 'BUTTON') return;
+                        yeni[item.name] = item.type === 'checkbox' ? item.checked : item.value;
+                    });
+                    localStorage.setItem(kayitKodu, JSON.stringify(yeni));
+                };
+                el.addEventListener('input', kaydet);
+                el.addEventListener('change', kaydet);
             });
         }
     </script>
+        <script>
+        if ("serviceWorker" in navigator) {
+            window.addEventListener("load", () => {
+                    navigator.serviceWorker.register("sw.js").then(reg => {
+                        // Yeni SW bulunduğunda veya bekliyorsa bildirim göster
+                        function showUpdate(registration) {
+                            const banner = document.getElementById('sw-update-banner');
+                            banner.classList.remove('hidden');
+                            const applyBtn = document.getElementById('sw-update-apply');
+                            applyBtn.onclick = () => {
+                                if (!registration || !registration.waiting) return;
+                                registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+                            };
+                        }
+
+                        if (reg.waiting) {
+                            showUpdate(reg);
+                        }
+
+                        reg.addEventListener('updatefound', () => {
+                            const newWorker = reg.installing;
+                            newWorker.addEventListener('statechange', () => {
+                                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                    showUpdate(reg);
+                                }
+                            });
+                        });
+
+                        navigator.serviceWorker.addEventListener('controllerchange', () => {
+                            // Yeni SW kontrolü ele aldığında sayfayı yenile
+                            window.location.reload();
+                        });
+                    }).catch(err => console.log("PWA kayıt hatası:", err));
+            });
+        }
+    </script>
+        <div id="sw-update-banner" class="hidden" aria-live="polite">
+            Yeni bir güncelleme hazır.
+            <button id="sw-update-apply">Şimdi Yenile</button>
+        </div>
 </body>
 </html>
