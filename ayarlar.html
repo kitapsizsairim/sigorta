@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Acente Ayarları</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icons/icon-192.svg" type="image/svg+xml">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
         body { background: #f0f2f5; display: flex; justify-content: center; min-height: 100vh; padding: 10px 0; }
@@ -53,6 +55,7 @@
         </div>
 
         <div class="form-grup"><label>Telefon Numarası</label><input type="text" id="cfg-acenteTel"></div>
+        <div class="form-grup"><label>E-Posta Adresi</label><input type="email" id="cfg-acenteMail"></div>
         <div class="form-grup"><label>Açık Adres</label><textarea id="cfg-acenteAdres" style="height:45px; resize:none;"></textarea></div>
 
         <div class="form-bolum-baslik">Slogan Kartı Düzeni</div>
@@ -88,6 +91,7 @@
             document.getElementById("cfg-logoGenislik").value = localStorage.getItem("cfg_logoGenislik") || "35";
             document.getElementById("cfg-logoYukseklik").value = localStorage.getItem("cfg_logoYukseklik") || "35";
             document.getElementById("cfg-acenteTel").value = localStorage.getItem("cfg_acenteTel") || "0555 123 45 67";
+            document.getElementById("cfg-acenteMail").value = localStorage.getItem("cfg_acenteMail") || "iletisim@sigortapwa.com";
             document.getElementById("cfg-acenteAdres").value = localStorage.getItem("cfg_acenteAdres") || "Merkez Mah. Atatürk Cad. No:123 İstanbul";
             document.getElementById("cfg-sloganAlt").value = localStorage.getItem("cfg_sloganAlt") || "Poliçelerinizi kolayca takip edin, müşterilerinize en iyi hizmeti sunun.";
             document.getElementById("cfg-sosyalGizle").value = localStorage.getItem("cfg_sosyalGizle") || "false";
@@ -101,51 +105,6 @@
             sosyalListeyiYenile();
         });
 
-        function canliOnizlemeKutusu() {
-            const oKutu = document.getElementById("logo-onizleme-kutusu");
-            const g = document.getElementById("cfg-logoGenislik").value || "35";
-            const y = document.getElementById("cfg-logoYukseklik").value || "35";
-            if(base64LogoData) { oKutu.innerHTML = '<img src="' + base64LogoData + '" class="onizleme-img" style="width:' + g + 'px; height:' + y + 'px;">'; }
-            else { oKutu.innerHTML = '<span style="font-size:10px; color:#94a3b8;">Yok</span>'; }
-
-            // Ana Resim Önizleme Kontrolü
-            const aKutu = document.getElementById("ana-resm-onizleme");
-            if(base64AnaResmData) {
-                aKutu.innerHTML = '<img src="' + base64AnaResmData + '" class="onizleme-img">';
-            } else {
-                aKutu.innerHTML = 'Görsel Yok';
-            }
-        }
-
-        function logoResmiIsle(input) {
-            if (input.files && input.files[0]) {
-                const okuyucu = new FileReader();
-                okuyucu.onload = function(e) { base64LogoData = e.target.result; canliOnizlemeKutusu(); };
-                okuyucu.readAsDataURL(input.files[0]);
-            }
-        }
-
-        // Ana resmi Base64 formatına çeviren işlemci
-        function anaResmiIsle(input) {
-            if (input.files && input.files[0]) {
-                const okuyucu = new FileReader();
-                okuyucu.onload = function(e) {
-                    base64AnaResmData = e.target.result;
-                    canliOnizlemeKutusu();
-                };
-                okuyucu.readAsDataURL(input.files[0]);
-            }
-        }
-
-function sosyalBilgiEkle() {
-            const tur = document.getElementById("yeni-sosyal-tur").value;
-            const veri = document.getElementById("yeni-sosyal-veri").value.trim();
-            if(!veri) return;
-            dinamikSosyalListesi.push({tur: tur, veri: veri});
-            document.getElementById("yeni-sosyal-veri").value = "";
-            canliOnizlemeKutusu();
-            sosyalListeyiYenile();
-        }
 
         function canliOnizlemeKutusu() {
             const oKutu = document.getElementById("logo-onizleme-kutusu");
@@ -161,7 +120,7 @@ function sosyalBilgiEkle() {
             if(base64AnaResmData) {
                 aKutu.innerHTML = '<img src="' + base64AnaResmData + '" class="onizleme-img">';
             } else {
-                aKutu.innerHTML = 'Görsel Yok';
+                aKutu.innerHTML = '<img src="nidirilenler/ana-tanitim-gorseli.svg" class="onizleme-img">';
             }
         }
 
@@ -214,10 +173,11 @@ function sosyalBilgiEkle() {
             localStorage.setItem("cfg_logoTuru", "RESIM");
             localStorage.setItem("cfg_logoGizle", document.getElementById("cfg-logoGizle").value);
             localStorage.setItem("cfg_logoImgData", base64LogoData);
-            localStorage.setItem("cfg_anaResmData", base64AnaResmData);
+            localStorage.setItem("cfg_anaResmData", base64AnaResmData || "nidirilenler/ana-tanitim-gorseli.svg");
             localStorage.setItem("cfg_logoGenislik", document.getElementById("cfg-logoGenislik").value);
             localStorage.setItem("cfg_logoYukseklik", document.getElementById("cfg-logoYukseklik").value);
             localStorage.setItem("cfg_acenteTel", document.getElementById("cfg-acenteTel").value);
+            localStorage.setItem("cfg_acenteMail", document.getElementById("cfg-acenteMail").value);
             localStorage.setItem("cfg_acenteAdres", document.getElementById("cfg-acenteAdres").value);
             localStorage.setItem("cfg_sloganAlt", document.getElementById("cfg-sloganAlt").value);
             localStorage.setItem("cfg_sosyalGizle", document.getElementById("cfg-sosyalGizle").value);
@@ -228,5 +188,41 @@ function sosyalBilgiEkle() {
             location.href = "index.html";
         }
     </script>
+    <script>
+        if ("serviceWorker" in navigator) {
+            window.addEventListener("load", () => {
+                navigator.serviceWorker.register("sw.js").then(reg => {
+                    function showUpdate(registration) {
+                        const banner = document.getElementById('sw-update-banner');
+                        if (!banner) return;
+                        banner.classList.remove('hidden');
+                        const applyBtn = document.getElementById('sw-update-apply');
+                        applyBtn.onclick = () => {
+                            if (!registration || !registration.waiting) return;
+                            registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+                        };
+                    }
+
+                    if (reg.waiting) showUpdate(reg);
+                    reg.addEventListener('updatefound', () => {
+                        const newWorker = reg.installing;
+                        newWorker.addEventListener('statechange', () => {
+                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                showUpdate(reg);
+                            }
+                        });
+                    });
+
+                    navigator.serviceWorker.addEventListener('controllerchange', () => {
+                        window.location.reload();
+                    });
+                }).catch(err => console.log("PWA kayıt hatası:", err));
+            });
+        }
+    </script>
+    <div id="sw-update-banner" class="hidden" aria-live="polite" style="position:fixed;left:50%;transform:translateX(-50%);bottom:18px;background:#111827;color:#fff;padding:10px 14px;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,0.25);display:flex;gap:10px;align-items:center;z-index:9999;font-size:13px;">
+        Yeni güncelleme hazır.
+        <button id="sw-update-apply" style="background:#10b981;color:#fff;border:none;padding:6px 10px;border-radius:8px;cursor:pointer;font-weight:700;">Şimdi Yenile</button>
+    </div>
 </body>
 </html>

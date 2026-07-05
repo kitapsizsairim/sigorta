@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hakkında Künyesi</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icons/icon-192.svg" type="image/svg+xml">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
         body { background: #f0f2f5; display: flex; justify-content: center; min-height: 100vh; padding: 10px 0; }
@@ -33,6 +35,21 @@
                 <div class="kunye-satir"><span class="kunye-sol">🚀 Versiyon:</span><span id="d-progVersiyon">v1.0.0</span></div>
             </div>
 
+            <div class="form-bolum-baslik">Düzenleme Alanı</div>
+            <div class="kunye-kart">
+                <div class="kunye-satir"><span class="kunye-sol">Program Adı</span><input type="text" id="edit-progAd" style="width: 60%; padding: 6px; border: 1px solid #cbd5e1; border-radius: 6px;"></div>
+                <div class="kunye-satir"><span class="kunye-sol">Versiyon</span><input type="text" id="edit-progVersiyon" style="width: 60%; padding: 6px; border: 1px solid #cbd5e1; border-radius: 6px;"></div>
+                <div class="kunye-satir"><span class="kunye-sol">Yapımcı</span><input type="text" id="edit-yapimci" style="width: 60%; padding: 6px; border: 1px solid #cbd5e1; border-radius: 6px;"></div>
+                <div class="kunye-satir"><span class="kunye-sol">Cep Telefonu</span><input type="text" id="edit-yapimciTel" style="width: 60%; padding: 6px; border: 1px solid #cbd5e1; border-radius: 6px;"></div>
+                <div class="kunye-satir"><span class="kunye-sol">Web</span><input type="text" id="edit-web" style="width: 60%; padding: 6px; border: 1px solid #cbd5e1; border-radius: 6px;"></div>
+                <div class="kunye-satir"><span class="kunye-sol">Facebook</span><input type="text" id="edit-facebook" style="width: 60%; padding: 6px; border: 1px solid #cbd5e1; border-radius: 6px;"></div>
+                <div class="kunye-satir"><span class="kunye-sol">Instagram</span><input type="text" id="edit-instagram" style="width: 60%; padding: 6px; border: 1px solid #cbd5e1; border-radius: 6px;"></div>
+                <div class="kunye-satir"><span class="kunye-sol">E-Posta</span><input type="text" id="edit-eposta" style="width: 60%; padding: 6px; border: 1px solid #cbd5e1; border-radius: 6px;"></div>
+                <div class="kunye-satir"><span class="kunye-sol">Slogan</span><input type="text" id="edit-slogan" style="width: 60%; padding: 6px; border: 1px solid #cbd5e1; border-radius: 6px;"></div>
+                <div class="kunye-satir"><span class="kunye-sol">Not</span><textarea id="edit-notlar" style="width: 60%; padding: 6px; border: 1px solid #cbd5e1; border-radius: 6px; height: 60px;"></textarea></div>
+                <button type="button" onclick="bilgileriKaydet()" style="width:100%; padding:10px; margin-top:8px; background:#ec4899; color:white; border:none; border-radius:8px; font-weight:bold; cursor:pointer;">💾 Bilgileri Kaydet</button>
+            </div>
+
             <div class="form-bolum-baslik">Geliştirici İletişim Kanalları</div>
             <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px; margin-bottom: 15px;">
                 <div class="kunye-satir"><span class="kunye-sol">👤 Yapımcı:</span><span id="d-yapimci">Ahmet</span></div>
@@ -40,6 +57,8 @@
                 <div class="kunye-satir"><span class="kunye-sol">🌐 Web Adresi:</span><span id="d-web">www...</span></div>
                 <div class="kunye-satir"><span class="kunye-sol">📘 Facebook:</span><span id="d-facebook">fb...</span></div>
                 <div class="kunye-satir"><span class="kunye-sol">📷 Instagram:</span><span id="d-instagram">@...</span></div>
+                <div class="kunye-satir"><span class="kunye-sol">✉️ E-Posta:</span><span id="d-eposta">mail...</span></div>
+                <div class="kunye-satir"><span class="kunye-sol">💬 Slogan:</span><span id="d-slogan">Poliçelerinize değer katın.</span></div>
             </div>
 
             <div class="form-bolum-baslik">Geliştirici Notları</div>
@@ -47,26 +66,83 @@
         </main>
     </div>
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            document.getElementById("lbl-acente").innerText = 
-                localStorage.getItem("cfg_acenteAd") || "Güven Sigorta";
-            document.getElementById("d-progAd").innerText = 
-                localStorage.getItem("h_progAd") || "Acente Takip Sistemi";
-            document.getElementById("d-progVersiyon").innerText = 
-                localStorage.getItem("h_progVersiyon") || "v1.0.0 PWA";
-            document.getElementById("d-yapimci").innerText = 
-                localStorage.getItem("h_yapimci") || "Ahmet Yılmaz";
-            document.getElementById("d-yapimciTel").innerText = 
-                localStorage.getItem("h_yapimciTel") || "0532 999 88 77";
-            document.getElementById("d-web").innerText = 
-                localStorage.getItem("h_web") || "://acenteasistani.com";
-            document.getElementById("d-facebook").innerText = 
-                localStorage.getItem("h_facebook") || "://facebook.com";
-            document.getElementById("d-instagram").innerText = 
-                localStorage.getItem("h_instagram") || "@acentepwa";
-            document.getElementById("d-notlar").innerText = 
-                localStorage.getItem("h_notlar") || "Acenteler için özel tasarlanmış hafif takip otomasyonu.";
-        });
+        function bilgileriYukle() {
+            document.getElementById("lbl-acente").innerText = localStorage.getItem("cfg_acenteAd") || "Güven Sigorta";
+            document.getElementById("d-progAd").innerText = localStorage.getItem("h_progAd") || "Acente Takip Sistemi";
+            document.getElementById("d-progVersiyon").innerText = localStorage.getItem("h_progVersiyon") || "v1.0.0 PWA";
+            document.getElementById("d-yapimci").innerText = localStorage.getItem("h_yapimci") || "Ahmet Yılmaz";
+            document.getElementById("d-yapimciTel").innerText = localStorage.getItem("h_yapimciTel") || "0532 999 88 77";
+            document.getElementById("d-web").innerText = localStorage.getItem("h_web") || "www.sigortapwa.com";
+            document.getElementById("d-facebook").innerText = localStorage.getItem("h_facebook") || "facebook.com/sigortapwa";
+            document.getElementById("d-instagram").innerText = localStorage.getItem("h_instagram") || "@sigortapwa";
+            document.getElementById("d-eposta").innerText = localStorage.getItem("h_eposta") || "iletisim@sigortapwa.com";
+            document.getElementById("d-slogan").innerText = localStorage.getItem("h_slogan") || "Poliçelerinizi kolayca takip edin, müşterilerinize en iyi hizmeti sunun.";
+            document.getElementById("d-notlar").innerText = localStorage.getItem("h_notlar") || "Acenteler için özel tasarlanmış hafif takip otomasyonu.";
+
+            document.getElementById("edit-progAd").value = localStorage.getItem("h_progAd") || "Acente Takip Sistemi";
+            document.getElementById("edit-progVersiyon").value = localStorage.getItem("h_progVersiyon") || "v1.0.0 PWA";
+            document.getElementById("edit-yapimci").value = localStorage.getItem("h_yapimci") || "Ahmet Yılmaz";
+            document.getElementById("edit-yapimciTel").value = localStorage.getItem("h_yapimciTel") || "0532 999 88 77";
+            document.getElementById("edit-web").value = localStorage.getItem("h_web") || "www.sigortapwa.com";
+            document.getElementById("edit-facebook").value = localStorage.getItem("h_facebook") || "facebook.com/sigortapwa";
+            document.getElementById("edit-instagram").value = localStorage.getItem("h_instagram") || "@sigortapwa";
+            document.getElementById("edit-eposta").value = localStorage.getItem("h_eposta") || "iletisim@sigortapwa.com";
+            document.getElementById("edit-slogan").value = localStorage.getItem("h_slogan") || "Poliçelerinizi kolayca takip edin, müşterilerinize en iyi hizmeti sunun.";
+            document.getElementById("edit-notlar").value = localStorage.getItem("h_notlar") || "Acenteler için özel tasarlanmış hafif takip otomasyonu.";
+        }
+
+        function bilgileriKaydet() {
+            localStorage.setItem("h_progAd", document.getElementById("edit-progAd").value);
+            localStorage.setItem("h_progVersiyon", document.getElementById("edit-progVersiyon").value);
+            localStorage.setItem("h_yapimci", document.getElementById("edit-yapimci").value);
+            localStorage.setItem("h_yapimciTel", document.getElementById("edit-yapimciTel").value);
+            localStorage.setItem("h_web", document.getElementById("edit-web").value);
+            localStorage.setItem("h_facebook", document.getElementById("edit-facebook").value);
+            localStorage.setItem("h_instagram", document.getElementById("edit-instagram").value);
+            localStorage.setItem("h_eposta", document.getElementById("edit-eposta").value);
+            localStorage.setItem("h_slogan", document.getElementById("edit-slogan").value);
+            localStorage.setItem("h_notlar", document.getElementById("edit-notlar").value);
+            bilgileriYukle();
+            alert("Bilgiler kaydedildi.");
+        }
+
+        document.addEventListener("DOMContentLoaded", bilgileriYukle);
     </script>
+    <script>
+        if ("serviceWorker" in navigator) {
+            window.addEventListener("load", () => {
+                navigator.serviceWorker.register("sw.js").then(reg => {
+                    function showUpdate(registration) {
+                        const banner = document.getElementById('sw-update-banner');
+                        if (!banner) return;
+                        banner.classList.remove('hidden');
+                        const applyBtn = document.getElementById('sw-update-apply');
+                        applyBtn.onclick = () => {
+                            if (!registration || !registration.waiting) return;
+                            registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+                        };
+                    }
+
+                    if (reg.waiting) showUpdate(reg);
+                    reg.addEventListener('updatefound', () => {
+                        const newWorker = reg.installing;
+                        newWorker.addEventListener('statechange', () => {
+                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                showUpdate(reg);
+                            }
+                        });
+                    });
+
+                    navigator.serviceWorker.addEventListener('controllerchange', () => {
+                        window.location.reload();
+                    });
+                }).catch(err => console.log("PWA kayıt hatası:", err));
+            });
+        }
+    </script>
+    <div id="sw-update-banner" class="hidden" aria-live="polite" style="position:fixed;left:50%;transform:translateX(-50%);bottom:18px;background:#111827;color:#fff;padding:10px 14px;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,0.25);display:flex;gap:10px;align-items:center;z-index:9999;font-size:13px;">
+        Yeni güncelleme hazır.
+        <button id="sw-update-apply" style="background:#10b981;color:#fff;border:none;padding:6px 10px;border-radius:8px;cursor:pointer;font-weight:700;">Şimdi Yenile</button>
+    </div>
 </body>
 </html>

@@ -3,6 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#2563eb">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Sigorta PWA">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icons/icon-192.svg" type="image/svg+xml">
     <title>Poliçe Girişi - Sayfa 2</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
@@ -30,11 +36,52 @@
                 <div class="form-bolum-baslik">Müşteri Detay Bilgileri</div>
                 <div class="form-grup"><label>Müşteri TC / Vergi No *</label><input type="number" required></div>
                 <div class="form-grup"><label>Doğum Tarihi</label><input type="date"></div>
-                <div class="form-grup"><label>Cep Telefonu Girişi (Birden fazla ise virgülle ayırın)</label><input type="text" placeholder="Örn: 0532..., 0542..."></div>
+                <div class="form-grup"><label>Cep Telefonu Girişi (Birden fazla ise virgülle ayırın)</label><input type="text" name="telefonlar" placeholder="Örn: 0532..., 0542..."></div>
+                <div class="form-grup"><label>Sigorta Ettiren Adı Soyadı</label><input type="text" name="ettirenAdSoyad" placeholder="Ad Soyad"></div>
+                <div class="form-grup"><label>Sigorta Ettiren Cep Telefonu</label><input type="text" name="ettirenTelefon" placeholder="Örn: 0532 123 45 67"></div>
 
                 <div class="form-bolum-baslik">Araç & Branş Detayları</div>
-                <div class="form-grup"><label>Plaka (Trafik ve Kasko İçin)</label><input type="text" placeholder="Örn: 34ABC123"></div>
+                <div class="form-grup"><label>Plaka (Trafik ve Kasko İçin)</label><input type="text" name="plaka" placeholder="Örn: 34ABC123"></div>
+                <div class="form-grup"><label>Belge Seri No</label><input type="text" name="belgeSeriNo" placeholder="Örn: AB123456"></div>
+                <div class="form-grup">
+                    <label>Poliçe Durumu</label>
+                    <select name="durum">
+                        <option value="Aktif">Aktif</option>
+                        <option value="İptal">İptal</option>
+                        <option value="Süresi Bitmiş">Süresi Bitmiş</option>
+                    </select>
+                </div>
+                <div class="form-grup">
+                    <label>Sigorta Süresi</label>
+                    <select name="sure">
+                        <option value="Yıllık">Yıllık</option>
+                        <option value="2 Aylık">2 Aylık</option>
+                        <option value="4 Aylık">4 Aylık</option>
+                        <option value="6 Aylık">6 Aylık</option>
+                    </select>
+                </div>
                 <div class="form-grup"><label>Araç Marka ve Tipi</label><input type="text" placeholder="Örn: Renault Megane"></div>
+                <div class="form-grup"><label>Araç Modeli</label><input type="text" placeholder="Örn: 2025 model"></div>
+                <div class="form-grup">
+                    <label>Araç Cinsi</label>
+                    <select>
+                        <option value="">Seçiniz</option>
+                        <option>01 - Otomobil</option>
+                        <option>02 - Taksi</option>
+                        <option>03 - Minibüs</option>
+                        <option>04 - Otobüs 16-30</option>
+                        <option>05 - Otobüs 31-56</option>
+                        <option>06 - Kamyonet</option>
+                        <option>07 - Kamyon</option>
+                        <option>08 - İş Makinesi</option>
+                        <option>09 - Traktör</option>
+                        <option>10 - Römork</option>
+                        <option>11 - Motorsiklet</option>
+                        <option>12 - Tanker</option>
+                        <option>13 - Çekici</option>
+                        <option>14 - Özel Amaçlı Taşıt</option>
+                    </select>
+                </div>
                 <div class="form-grup"><label>Şasi No</label><input type="text" placeholder="17 Haneli Kod"></div>
                 <div class="form-grup"><label>Motor No</label><input type="text"></div>
                 <div class="form-grup"><label>DASK için UAVT Girişi</label><input type="text" placeholder="10 Haneli Adres Kodu"></div>
@@ -67,6 +114,65 @@
     <script>
         const yAdForm = localStorage.getItem("cfg_acenteAd") || "Güven Sigorta";
         document.getElementById("odeme-acente-adi").innerText = yAdForm;
+
+        const detayForm = document.querySelector('form');
+        if (detayForm) {
+            const kayitKodu = 'sigorta-odeme-form';
+            const kayitli = JSON.parse(localStorage.getItem(kayitKodu) || '{}');
+            Array.from(detayForm.elements).forEach(el => {
+                if (!el.name || el.tagName === 'BUTTON') return;
+                if (kayitli[el.name] !== undefined) {
+                    if (el.type === 'checkbox') el.checked = kayitli[el.name];
+                    else el.value = kayitli[el.name];
+                }
+                const kaydet = () => {
+                    const yeni = {};
+                    Array.from(detayForm.elements).forEach(item => {
+                        if (!item.name || item.tagName === 'BUTTON') return;
+                        yeni[item.name] = item.type === 'checkbox' ? item.checked : item.value;
+                    });
+                    localStorage.setItem(kayitKodu, JSON.stringify(yeni));
+                };
+                el.addEventListener('input', kaydet);
+                el.addEventListener('change', kaydet);
+            });
+        }
     </script>
+    <script>
+        if ("serviceWorker" in navigator) {
+            window.addEventListener("load", () => {
+                navigator.serviceWorker.register("sw.js").then(reg => {
+                    function showUpdate(registration) {
+                        const banner = document.getElementById('sw-update-banner');
+                        if (!banner) return;
+                        banner.classList.remove('hidden');
+                        const applyBtn = document.getElementById('sw-update-apply');
+                        applyBtn.onclick = () => {
+                            if (!registration || !registration.waiting) return;
+                            registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+                        };
+                    }
+
+                    if (reg.waiting) showUpdate(reg);
+                    reg.addEventListener('updatefound', () => {
+                        const newWorker = reg.installing;
+                        newWorker.addEventListener('statechange', () => {
+                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                showUpdate(reg);
+                            }
+                        });
+                    });
+
+                    navigator.serviceWorker.addEventListener('controllerchange', () => {
+                        window.location.reload();
+                    });
+                }).catch(err => console.log("PWA kayıt hatası:", err));
+            });
+        }
+    </script>
+    <div id="sw-update-banner" class="hidden" aria-live="polite" style="position:fixed;left:50%;transform:translateX(-50%);bottom:18px;background:#111827;color:#fff;padding:10px 14px;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,0.25);display:flex;gap:10px;align-items:center;z-index:9999;font-size:13px;">
+        Yeni güncelleme hazır.
+        <button id="sw-update-apply" style="background:#10b981;color:#fff;border:none;padding:6px 10px;border-radius:8px;cursor:pointer;font-weight:700;">Şimdi Yenile</button>
+    </div>
 </body>
 </html>

@@ -3,6 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#2563eb">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Sigorta PWA">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icons/icon-192.svg" type="image/svg+xml">
     <title>Gelişmiş Poliçe Arama</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
@@ -48,13 +54,93 @@
                 <div class="form-grup">
                     <label>Şirket Adı</label>
                     <select id="arama-sirket">
-                        <option value="HEPSI">-- Tümü --</option><option>Allianz Sigorta</option><option>Anadolu Sigorta</option><option>Doğa Sigorta</option><option>Türk Nippon Sigorta</option><option>Quick Sigorta</option>
+                        <option value="HEPSI">-- Tümü --</option>
+                        <option>Acıbadem</option>
+                        <option>Acn Türk</option>
+                        <option>Aegon</option>
+                        <option>Ak Sigorta</option>
+                        <option>Allianz</option>
+                        <option>Ana Sigorta</option>
+                        <option>Anadolu</option>
+                        <option>Ankara</option>
+                        <option>Arex</option>
+                        <option>Atlas</option>
+                        <option>Aveon</option>
+                        <option>Axa</option>
+                        <option>Bereket</option>
+                        <option>Corpus</option>
+                        <option>Doğa</option>
+                        <option>Emaa</option>
+                        <option>Ethica</option>
+                        <option>Eureko</option>
+                        <option>Gulf</option>
+                        <option>Hdi</option>
+                        <option>Hepiyi</option>
+                        <option>Koru</option>
+                        <option>Magdeburger</option>
+                        <option>Mapfre</option>
+                        <option>Neova</option>
+                        <option>Orient</option>
+                        <option>Quick</option>
+                        <option>Ray Sigorta</option>
+                        <option>Referans</option>
+                        <option>Sompo</option>
+                        <option>Şeker</option>
+                        <option>Türk Nippon</option>
+                        <option>Türkiye</option>
+                        <option>Türkiye Katılım</option>
+                        <option>Unico</option>
+                        <option>Zürih</option>
                     </select>
                 </div>
                 <div class="form-grup">
                     <label>Poliçe Türü (Branş)</label>
                     <select id="arama-branis">
-                        <option value="HEPSI">-- Tümü --</option><option>Trafik Sigortası</option><option>Kasko Sigortası</option><option>DASK</option><option>Sağlık Sigortası</option>
+                        <option value="HEPSI">-- Tümü --</option>
+                        <option>Trafik</option>
+                        <option>Kasko</option>
+                        <option>İmm</option>
+                        <option>Yol Yardımı</option>
+                        <option>Dask</option>
+                        <option>Konut</option>
+                        <option>İşyeri</option>
+                        <option>Yangın</option>
+                        <option>Tamamlayıcı Sağlık</option>
+                        <option>Özel Sağlık</option>
+                        <option>Hayat Sigortası</option>
+                        <option>Ferdi Kaza</option>
+                        <option>Seyahat Sağlık</option>
+                        <option>Nakliyat</option>
+                        <option>Tarsim</option>
+                        <option>All-Risk</option>
+                        <option>Mesleki Sorumluluk</option>
+                    </select>
+                </div>
+            </div>
+            <div class="satir-iki">
+                <div class="form-grup"><label>Cep Telefonu</label><input type="text" id="arama-telefon" placeholder="0532..."></div>
+                <div class="form-grup"><label>Araç Marka ve Tipi</label><input type="text" id="arama-marka" placeholder="Renault Megane"></div>
+            </div>
+            <div class="satir-iki">
+                <div class="form-grup"><label>Araç Modeli</label><input type="text" id="arama-model" placeholder="2025 model"></div>
+                <div class="form-grup">
+                    <label>Araç Cinsi</label>
+                    <select id="arama-cinsi">
+                        <option value="HEPSI">-- Tümü --</option>
+                        <option>01 - Otomobil</option>
+                        <option>02 - Taksi</option>
+                        <option>03 - Minibüs</option>
+                        <option>04 - Otobüs 16-30</option>
+                        <option>05 - Otobüs 31-56</option>
+                        <option>06 - Kamyonet</option>
+                        <option>07 - Kamyon</option>
+                        <option>08 - İş Makinesi</option>
+                        <option>09 - Traktör</option>
+                        <option>10 - Römork</option>
+                        <option>11 - Motorsiklet</option>
+                        <option>12 - Tanker</option>
+                        <option>13 - Çekici</option>
+                        <option>14 - Özel Amaçlı Taşıt</option>
                     </select>
                 </div>
             </div>
@@ -97,9 +183,9 @@
         });
 
         const DB = [
-            { no: "554433/1", ad: "Ahmet Yılmaz", tc: "12345678901", plaka: "34ABC123", sirket: "Doğa Sigorta", brans: "Trafik Sigortası", durum: "IPTAL", borc: 0, bitis: "2026-03-15", kalanGun: 0 },
-            { no: "998877/0", ad: "Mehmet Demir", tc: "98765432102", plaka: "06XYZ99", sirket: "Türk Nippon Sigorta", brans: "Kasko Sigortası", durum: "AKTIF", borc: 1250, bitis: "2026-08-20", kalanGun: 45 },
-            { no: "112233/2", ad: "Ayşe Kaya", tc: "45612378903", plaka: "35TUR12", sirket: "Allianz Sigorta", brans: "DASK", durum: "AKTIF", borc: 0, bitis: "2026-03-28", kalanGun: 14 }
+            { no: "554433/1", ad: "Ahmet Yılmaz", tc: "12345678901", plaka: "34ABC123", sirket: "Doğa", brans: "Trafik", durum: "IPTAL", borc: 0, bitis: "2026-03-15", kalanGun: 0, telefon: "05321234567", marka: "Renault", model: "Megane", cinsi: "01 - Otomobil" },
+            { no: "998877/0", ad: "Mehmet Demir", tc: "98765432102", plaka: "06XYZ99", sirket: "Türk Nippon", brans: "Kasko", durum: "AKTIF", borc: 1250, bitis: "2026-08-20", kalanGun: 45, telefon: "05451234567", marka: "BMW", model: "320i", cinsi: "01 - Otomobil" },
+            { no: "112233/2", ad: "Ayşe Kaya", tc: "45612378903", plaka: "35TUR12", sirket: "Allianz", brans: "Dask", durum: "AKTIF", borc: 0, bitis: "2026-03-28", kalanGun: 14, telefon: "05551234567", marka: "Toyota", model: "2025 model", cinsi: "01 - Otomobil" }
         ];
 
         function aramaYap() {
@@ -107,6 +193,10 @@
             const fNo = document.getElementById("arama-no").value;
             const fTc = document.getElementById("arama-tc").value;
             const fPl = document.getElementById("arama-plaka").value.toLowerCase();
+            const fTelefon = document.getElementById("arama-telefon").value.toLowerCase();
+            const fMarka = document.getElementById("arama-marka").value.toLowerCase();
+            const fModel = document.getElementById("arama-model").value.toLowerCase();
+            const fCinsi = document.getElementById("arama-cinsi").value;
             const fSi = document.getElementById("arama-sirket").value;
             const fBr = document.getElementById("arama-branis").value;
             const fOz = document.getElementById("arama-ozeldurum").value;
@@ -123,6 +213,10 @@
                 if (fNo && !p.no.includes(fNo)) return false;
                 if (fTc && !p.tc.includes(fTc)) return false;
                 if (fPl && !p.plaka.toLowerCase().includes(fPl)) return false;
+                if (fTelefon && !String(p.telefon || "").toLowerCase().includes(fTelefon)) return false;
+                if (fMarka && !String(p.marka || "").toLowerCase().includes(fMarka)) return false;
+                if (fModel && !String(p.model || "").toLowerCase().includes(fModel)) return false;
+                if (fCinsi !== "HEPSI" && String(p.cinsi || "") !== fCinsi) return false;
                 if (fSi !== "HEPSI" && p.sirket !== fSi) return false;
                 if (fBr !== "HEPSI" && p.brans !== fBr) return false;
                 if (fKl && p.kalanGun > parseInt(fKl)) return false;
@@ -155,11 +249,49 @@
                     '<div class="kart-baslik"><span>🚗 ' + p.plaka.toUpperCase() + '</span>' + lbl + '</div>' +
                     '<div class="kart-detay"><strong>Müşteri:</strong> ' + p.ad + '</div>' +
                     '<div class="kart-detay"><strong>Poliçe No:</strong> ' + p.no + ' - ' + p.sirket + '</div>' +
+                    '<div class="kart-detay"><strong>Cep Telefonu:</strong> ' + (p.telefon || '-') + '</div>' +
+                    '<div class="kart-detay"><strong>Araç:</strong> ' + (p.marka || '-') + ' ' + (p.model || '-') + ' / ' + (p.cinsi || '-') + '</div>' +
                     '<div class="kart-detay" style="color:#b91c1c;"><strong>Vade:</strong> ' + 
                     p.bitis.split("-").reverse().join(".") + ' (' + p.kalanGun + ' Gün)</div>' +
                     '</div>';
             });
         }
     </script>
+    <script>
+        if ("serviceWorker" in navigator) {
+            window.addEventListener("load", () => {
+                navigator.serviceWorker.register("sw.js").then(reg => {
+                    function showUpdate(registration) {
+                        const banner = document.getElementById('sw-update-banner');
+                        if (!banner) return;
+                        banner.classList.remove('hidden');
+                        const applyBtn = document.getElementById('sw-update-apply');
+                        applyBtn.onclick = () => {
+                            if (!registration || !registration.waiting) return;
+                            registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+                        };
+                    }
+
+                    if (reg.waiting) showUpdate(reg);
+                    reg.addEventListener('updatefound', () => {
+                        const newWorker = reg.installing;
+                        newWorker.addEventListener('statechange', () => {
+                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                showUpdate(reg);
+                            }
+                        });
+                    });
+
+                    navigator.serviceWorker.addEventListener('controllerchange', () => {
+                        window.location.reload();
+                    });
+                }).catch(err => console.log("PWA kayıt hatası:", err));
+            });
+        }
+    </script>
+    <div id="sw-update-banner" class="hidden" aria-live="polite" style="position:fixed;left:50%;transform:translateX(-50%);bottom:18px;background:#111827;color:#fff;padding:10px 14px;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,0.25);display:flex;gap:10px;align-items:center;z-index:9999;font-size:13px;">
+        Yeni güncelleme hazır.
+        <button id="sw-update-apply" style="background:#10b981;color:#fff;border:none;padding:6px 10px;border-radius:8px;cursor:pointer;font-weight:700;">Şimdi Yenile</button>
+    </div>
 </body>
 </html>

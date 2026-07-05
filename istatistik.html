@@ -3,6 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#2563eb">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Sigorta PWA">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icons/icon-192.svg" type="image/svg+xml">
     <title>Acente İstatistikleri</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
@@ -50,22 +56,106 @@
             </div>
 
             <div class="form-bolum-baslik">Branş Dağılımı (%)</div>
-            <div class="analiz-kutusu">
-                <div class="analiz-satir"><span>🚗 Trafik Sigortası</span><div class="gosterge-alani"><span class="adet-etiket">19 Adet</span><span class="yuzde-etiket">%45</span></div></div>
-                <div class="analiz-satir"><span>🛡️ Kasko Sigortası</span><div class="gosterge-alani"><span class="adet-etiket">5 Adet</span><span class="yuzde-etiket">%12</span></div></div>
-                <div class="analiz-satir"><span>🏠 DASK (Deprem)</span><div class="gosterge-alani"><span class="adet-etiket">2 Adet</span><span class="yuzde-etiket">%3</span></div></div>
-            </div>
+            <div class="analiz-kutusu" id="branş-listesi"></div>
 
             <div class="form-bolum-baslik">Şirket Dağılımı (%)</div>
-            <div class="analiz-kutusu">
-                <div class="analiz-satir"><span>Allianz Sigorta</span><div class="gosterge-alani"><span class="adet-etiket">14 Adet</span><span class="yuzde-etiket">%33</span></div></div>
-                <div class="analiz-satir"><span>Quick Sigorta</span><div class="gosterge-alani"><span class="adet-etiket">6 Adet</span><span class="yuzde-etiket">%15</span></div></div>
-            </div>
+            <div class="analiz-kutusu" id="sirket-listesi"></div>
+
+            <div class="form-bolum-baslik">Araç Cinsi Dağılımı (%)</div>
+            <div class="analiz-kutusu" id="arac-cinsi-listesi"></div>
+
+            <div class="form-bolum-baslik">Poliçe Süresi Dağılımı</div>
+            <div class="analiz-kutusu" id="sure-listesi"></div>
+
+            <div class="form-bolum-baslik">Yıllık / 2 Aylık Oran</div>
+            <div class="analiz-kutusu" id="sure-karsilastirma"></div>
         </main>
     </div>
     <script>
         const yAdIst = localStorage.getItem("cfg_acenteAd") || "Güven Sigorta";
         document.getElementById("ist-acente-adi").innerText = yAdIst;
+
+        const veriListesi = [
+            { brans: "Trafik", sirket: "Doğa", aracCinsi: "01 - Otomobil", sure: "Yıllık", durum: "Aktif" },
+            { brans: "Kasko", sirket: "Allianz", aracCinsi: "01 - Otomobil", sure: "2 Aylık", durum: "Aktif" },
+            { brans: "Dask", sirket: "Quick", aracCinsi: "06 - Kamyonet", sure: "Yıllık", durum: "Aktif" },
+            { brans: "Trafik", sirket: "Türk Nippon", aracCinsi: "11 - Motorsiklet", sure: "Yıllık", durum: "İptal" },
+            { brans: "Kasko", sirket: "Allianz", aracCinsi: "01 - Otomobil", sure: "2 Aylık", durum: "Aktif" },
+            { brans: "Trafik", sirket: "Doğa", aracCinsi: "07 - Kamyon", sure: "Yıllık", durum: "Aktif" }
+        ];
+
+        function renderOran(containerId, keys, labelKey) {
+            const container = document.getElementById(containerId);
+            const toplam = veriListesi.length;
+            const sayilar = {};
+
+            veriListesi.forEach(item => {
+                const key = item[keys];
+                sayilar[key] = (sayilar[key] || 0) + 1;
+            });
+
+            const entries = Object.entries(sayilar).sort((a, b) => b[1] - a[1]);
+            container.innerHTML = entries.map(([key, adet]) => {
+                const yuzde = ((adet / toplam) * 100).toFixed(0);
+                return '<div class="analiz-satir"><span>' + key + '</span><div class="gosterge-alani"><span class="adet-etiket">' + adet + ' Adet</span><span class="yuzde-etiket">%' + yuzde + '</span></div></div>';
+            }).join("");
+        }
+
+        function renderSureKarsilastirma() {
+            const container = document.getElementById("sure-karsilastirma");
+            const yillik = veriListesi.filter(item => item.sure === "Yıllık").length;
+            const ikiAylik = veriListesi.filter(item => item.sure === "2 Aylık").length;
+            const toplam = yillik + ikiAylik;
+            const yillikOran = toplam ? ((yillik / toplam) * 100).toFixed(0) : 0;
+            const ikiAylikOran = toplam ? ((ikiAylik / toplam) * 100).toFixed(0) : 0;
+
+            container.innerHTML = [
+                '<div class="analiz-satir"><span>📅 Yıllık</span><div class="gosterge-alani"><span class="adet-etiket">' + yillik + ' Adet</span><span class="yuzde-etiket">%' + yillikOran + '</span></div></div>',
+                '<div class="analiz-satir"><span>🗓️ 2 Aylık</span><div class="gosterge-alani"><span class="adet-etiket">' + ikiAylik + ' Adet</span><span class="yuzde-etiket">%' + ikiAylikOran + '</span></div></div>'
+            ].join("");
+        }
+
+        renderOran("branş-listesi", "brans");
+        renderOran("sirket-listesi", "sirket");
+        renderOran("arac-cinsi-listesi", "aracCinsi");
+        renderOran("sure-listesi", "sure");
+        renderSureKarsilastirma();
     </script>
+    <script>
+        if ("serviceWorker" in navigator) {
+            window.addEventListener("load", () => {
+                navigator.serviceWorker.register("sw.js").then(reg => {
+                    function showUpdate(registration) {
+                        const banner = document.getElementById('sw-update-banner');
+                        if (!banner) return;
+                        banner.classList.remove('hidden');
+                        const applyBtn = document.getElementById('sw-update-apply');
+                        applyBtn.onclick = () => {
+                            if (!registration || !registration.waiting) return;
+                            registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+                        };
+                    }
+
+                    if (reg.waiting) showUpdate(reg);
+                    reg.addEventListener('updatefound', () => {
+                        const newWorker = reg.installing;
+                        newWorker.addEventListener('statechange', () => {
+                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                showUpdate(reg);
+                            }
+                        });
+                    });
+
+                    navigator.serviceWorker.addEventListener('controllerchange', () => {
+                        window.location.reload();
+                    });
+                }).catch(err => console.log("PWA kayıt hatası:", err));
+            });
+        }
+    </script>
+    <div id="sw-update-banner" class="hidden" aria-live="polite" style="position:fixed;left:50%;transform:translateX(-50%);bottom:18px;background:#111827;color:#fff;padding:10px 14px;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,0.25);display:flex;gap:10px;align-items:center;z-index:9999;font-size:13px;">
+        Yeni güncelleme hazır.
+        <button id="sw-update-apply" style="background:#10b981;color:#fff;border:none;padding:6px 10px;border-radius:8px;cursor:pointer;font-weight:700;">Şimdi Yenile</button>
+    </div>
 </body>
 </html>
