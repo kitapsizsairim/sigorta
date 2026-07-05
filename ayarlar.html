@@ -98,7 +98,7 @@
             document.getElementById("cfg-renkArkaplan").value = localStorage.getItem("cfg_renkArkaplan") || "#ffffff";
 
             base64LogoData = localStorage.getItem("cfg_logoImgData") || "";
-            base64AnaResmData = localStorage.getItem("cfg_anaResmData") || "";
+            base64AnaResmData = localStorage.getItem("cfg_anaResmData") || "depo/ana-tanitim-gorseli.svg";
             dinamikSosyalListesi = JSON.parse(localStorage.getItem("cfg_sosyalMedyaListesi")) || [];
             
             canliOnizlemeKutusu();
@@ -120,7 +120,7 @@
             if(base64AnaResmData) {
                 aKutu.innerHTML = '<img src="' + base64AnaResmData + '" class="onizleme-img">';
             } else {
-                aKutu.innerHTML = '<img src="nidirilenler/ana-tanitim-gorseli.svg" class="onizleme-img">';
+                aKutu.innerHTML = '<img src="depo/ana-tanitim-gorseli.svg" class="onizleme-img">';
             }
         }
 
@@ -173,7 +173,7 @@
             localStorage.setItem("cfg_logoTuru", "RESIM");
             localStorage.setItem("cfg_logoGizle", document.getElementById("cfg-logoGizle").value);
             localStorage.setItem("cfg_logoImgData", base64LogoData);
-            localStorage.setItem("cfg_anaResmData", base64AnaResmData || "nidirilenler/ana-tanitim-gorseli.svg");
+            localStorage.setItem("cfg_anaResmData", base64AnaResmData || "depo/ana-tanitim-gorseli.svg");
             localStorage.setItem("cfg_logoGenislik", document.getElementById("cfg-logoGenislik").value);
             localStorage.setItem("cfg_logoYukseklik", document.getElementById("cfg-logoYukseklik").value);
             localStorage.setItem("cfg_acenteTel", document.getElementById("cfg-acenteTel").value);

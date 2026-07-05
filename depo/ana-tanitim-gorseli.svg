@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="600" viewBox="0 0 1200 600">
+  <rect width="1200" height="600" fill="#eff6ff"/>
+  <rect x="70" y="80" width="1060" height="440" rx="30" fill="#ffffff" stroke="#bfdbfe" stroke-width="4"/>
+  <circle cx="350" cy="300" r="120" fill="#2563eb"/>
+  <path d="M350 180c58 0 105 47 105 105 0 58-47 105-105 105-58 0-105-47-105-105 0-58 47-105 105-105z" fill="#ffffff"/>
+  <rect x="520" y="220" width="340" height="44" rx="10" fill="#2563eb"/>
+  <text x="520" y="205" font-size="28" font-family="Arial, sans-serif" font-weight="700" fill="#0f172a">Sigorta Takip Uygulaması</text>
+</svg>

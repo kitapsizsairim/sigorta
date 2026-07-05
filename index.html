@@ -223,7 +223,7 @@
         const nAd = localStorage.getItem("cfg_acenteAd") || "Fırat Sigorta Acentesi";
         const nImg = localStorage.getItem("cfg_logoImgData") || "";
         const nGizle = localStorage.getItem("cfg_logoGizle") === "true";
-        const anaResmData = localStorage.getItem("cfg_anaResmData") || "nidirilenler/ana-tanitim-gorseli.svg";
+        const anaResmData = localStorage.getItem("cfg_anaResmData") || "depo/ana-tanitim-gorseli.svg";
         const nTel = localStorage.getItem("cfg_acenteTel") || "0555 123 45 67";
         const nAdres = localStorage.getItem("cfg_acenteAdres") || "Merkez Mah. Atatürk Cad. No:123 İstanbul";
         const nSloAlt = localStorage.getItem("cfg_sloganAlt") || localStorage.getItem("h_slogan") || "Poliçelerinizi kolayca takip edin, müşterilerinize en iyi hizmeti sunun.";
@@ -251,9 +251,11 @@
         } else {
             lKap.style.display = "flex";
             if (nImg) { 
-                lKap.innerHTML = '<img src="' + nImg + '" style="width:' + nG + 'px; height:' + nY + 'px; object-fit:cover; border-radius:50%;">'; 
-            } else { 
-                lKap.innerHTML = '<div class="logo-varsayilan">' + nAd.charAt(0).toUpperCase() + '</div>'; 
+                lKap.innerHTML = '<img src="' + nImg + '" style="width:' + nG + 'px; height:' + nY + 'px; object-fit:cover; border-radius:50%">'; 
+            } else {
+                // Try to use default depo logo, fallback to initial
+                const defaultLogo = 'depo/acente-logo.svg';
+                lKap.innerHTML = '<img src="' + defaultLogo + '" style="width:' + nG + 'px; height:' + nY + 'px; object-fit:cover; border-radius:50%" onerror="this.outerHTML=\'<div class=\'logo-varsayilan\'>' + nAd.charAt(0).toUpperCase() + '\'</div>\'">';
             }
         }
 
