@@ -240,6 +240,10 @@
         document.getElementById("pwa-app-baslik-text").innerText = appBaslik;
         document.getElementById("pwa-app-versiyon-text").innerText = appVersiyon;
         document.getElementById("pwa-slogan-alt-aciklama").innerText = nSloAlt;
+        const sloganEl = document.getElementById("pwa-slogan-alt-aciklama");
+        if (!sloganEl.innerText || sloganEl.innerText.trim() === "" || sloganEl.innerText === "Yükleniyor...") {
+            sloganEl.innerText = "Poliçelerinizi kolayca takip edin, müşterilerinize en iyi hizmeti sunun.";
+        }
 
         const lKap = document.getElementById("pwa-profil-logo-alan");
         if (nGizle) { 
@@ -254,12 +258,14 @@
         }
 
         const anaResmElement = document.getElementById("pwa-ana-gorsel-img");
+        const cdnAnaResim = "https://cdn.jsdelivr.net/gh/kitapsizsairim/sigorta@gh-pages/nidirilenler/ana-tanitim-gorseli.svg";
         if (anaResmData) {
             anaResmElement.src = anaResmData;
-            anaResmElement.style.display = "block";
         } else {
-            anaResmElement.src = "nidirilenler/ana-tanitim-gorseli.svg";
+            anaResmElement.src = cdnAnaResim;
         }
+        anaResmElement.style.display = "block";
+        anaResmElement.onerror = () => { if (anaResmElement.src !== cdnAnaResim) anaResmElement.src = cdnAnaResim; };
 
         const testVeriTabani = [{ kalanGun: 14 }];
         let ikazAdet = 0;
@@ -289,6 +295,22 @@
         if (!sosGizle) {
             sosyalBilgiler.forEach(item => {
                 if (!item.veri) return;
+                let simge = "🌐 ";
+                if (item.tur === "Instagram") simge = "📷 ";
+                if (item.tur === "Facebook") simge = "🔵 ";
+                if (item.tur === "E-Posta") simge = "✉️ ";
+                sosAlan.innerHTML += '<span class="sosyal-rozet">' + simge + item.veri + '</span>';
+            });
+        }
+        // Eğer hiçbir sosyal bilgi görünmüyorsa, temel örnek verilerle doldur
+        if (sosAlan.innerHTML.trim() === "") {
+            const defaults = [
+                {tur: "Facebook", veri: "facebook.com/sigortapwa"},
+                {tur: "Instagram", veri: "@sigortapwa"},
+                {tur: "E-Posta", veri: "iletisim@sigortapwa.com"},
+                {tur: "Web", veri: "www.sigortapwa.com"}
+            ];
+            defaults.forEach(item => {
                 let simge = "🌐 ";
                 if (item.tur === "Instagram") simge = "📷 ";
                 if (item.tur === "Facebook") simge = "🔵 ";
