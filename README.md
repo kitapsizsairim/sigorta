@@ -28,6 +28,7 @@ PWA, servis çalışanı ve önbellek notları
 
 - Servis çalışanı dosyası: `sw.js` (cache sürümü şu an `sigorta-pwa-v3`).
 - Uygulama sayfalarında güncelleme bildirimi için bir banner (`sw-update-banner`) ve "Şimdi Yenile" butonu eklenmiştir. Yeni SW yüklendiğinde kullanıcıya bildirim görünür; butona basıldığında `skipWaiting()` tetiklenir ve sayfa yenilenir.
+- `offline.html` sayfası eklendi ve servis çalışanı tarafından önbelleğe alındı. Çevrimdışı olduğunuzda PWA bu sayfayı yüklemeye çalışır.
 - Hızlı önbellek atlama yöntemleri:
   - URL sonuna `?v=<timestamp>` ekleyin (örnek: `/index.html?v=1650000000`).
   - Tarayıcı DevTools → Network → "Disable cache" seçeneğini açıp yeniden yükleyin.

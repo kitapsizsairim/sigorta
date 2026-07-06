@@ -6,10 +6,10 @@
     <meta name="theme-color" content="#2563eb">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="Sigorta PWA">
+    <meta name="apple-mobile-web-app-title" content="Acente Takip Programı v.6.3">
     <link rel="manifest" href="manifest.json">
     <link rel="icon" href="icons/icon-192.svg" type="image/svg+xml">
-    <title>Poliçe Girişi - Sayfa 2</title>
+    <title>Acente Takip Programı v.6.3 - Sayfa 2</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
         body { background: #f0f2f5; display: flex; justify-content: center; min-height: 100vh; padding: 10px 0; }
@@ -36,30 +36,10 @@
                 <div class="form-bolum-baslik">Müşteri Detay Bilgileri</div>
                 <div class="form-grup"><label>Müşteri TC / Vergi No *</label><input type="number" required></div>
                 <div class="form-grup"><label>Doğum Tarihi</label><input type="date"></div>
-                <div class="form-grup"><label>Cep Telefonu Girişi (Birden fazla ise virgülle ayırın)</label><input type="text" name="telefonlar" placeholder="Örn: 0532..., 0542..."></div>
-                <div class="form-grup"><label>Sigorta Ettiren Adı Soyadı</label><input type="text" name="ettirenAdSoyad" placeholder="Ad Soyad"></div>
-                <div class="form-grup"><label>Sigorta Ettiren Cep Telefonu</label><input type="text" name="ettirenTelefon" placeholder="Örn: 0532 123 45 67"></div>
+                <div class="form-grup"><label>Adres Bilgisi</label><textarea style="height:55px; resize:none;" placeholder="Açık adres..."></textarea></div>
 
                 <div class="form-bolum-baslik">Araç & Branş Detayları</div>
                 <div class="form-grup"><label>Plaka (Trafik ve Kasko İçin)</label><input type="text" name="plaka" placeholder="Örn: 34ABC123"></div>
-                <div class="form-grup"><label>Belge Seri No</label><input type="text" name="belgeSeriNo" placeholder="Örn: AB123456"></div>
-                <div class="form-grup">
-                    <label>Poliçe Durumu</label>
-                    <select name="durum">
-                        <option value="Aktif">Aktif</option>
-                        <option value="İptal">İptal</option>
-                        <option value="Süresi Bitmiş">Süresi Bitmiş</option>
-                    </select>
-                </div>
-                <div class="form-grup">
-                    <label>Sigorta Süresi</label>
-                    <select name="sure">
-                        <option value="Yıllık">Yıllık</option>
-                        <option value="2 Aylık">2 Aylık</option>
-                        <option value="4 Aylık">4 Aylık</option>
-                        <option value="6 Aylık">6 Aylık</option>
-                    </select>
-                </div>
                 <div class="form-grup"><label>Araç Marka ve Tipi</label><input type="text" placeholder="Örn: Renault Megane"></div>
                 <div class="form-grup"><label>Araç Modeli</label><input type="text" placeholder="Örn: 2025 model"></div>
                 <div class="form-grup">
@@ -83,7 +63,7 @@
                     </select>
                 </div>
                 <div class="form-grup"><label>Şasi No</label><input type="text" placeholder="17 Haneli Kod"></div>
-                <div class="form-grup"><label>Motor No</label><input type="text"></div>
+                <div class="form-grup"><label>Motor No</label><input type="text" placeholder=""></div>
                 <div class="form-grup"><label>DASK için UAVT Girişi</label><input type="text" placeholder="10 Haneli Adres Kodu"></div>
                 <div class="form-grup"><label>Adres Girişi</label><textarea style="height:55px; resize:none;" placeholder="Açık adres..."></textarea></div>
 

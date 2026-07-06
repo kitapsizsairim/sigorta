@@ -1,7 +1,7 @@
 {
-  "name": "Sigorta PWA",
-  "short_name": "Sigorta",
-  "description": "Sigorta poliçe takibi ve giriş uygulaması",
+  "name": "Acente Takip Programı v.6.3",
+  "short_name": "AcenteTakip",
+  "description": "Acente Takip Programı için poliçe yönetimi ve hızlı erişim uygulaması",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",

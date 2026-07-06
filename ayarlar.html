@@ -3,8 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acente Ayarları</title>
+    <meta name="theme-color" content="#2563eb">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Acente Takip Programı v.6.3">
+    <title>Acente Takip Programı v.6.3 - Ayarlar</title>
     <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icons/icon-192.svg">
     <link rel="icon" href="icons/icon-192.svg" type="image/svg+xml">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
@@ -56,6 +61,7 @@
 
         <div class="form-grup"><label>Telefon Numarası</label><input type="text" id="cfg-acenteTel"></div>
         <div class="form-grup"><label>E-Posta Adresi</label><input type="email" id="cfg-acenteMail"></div>
+        <div class="form-grup"><label>Web Adresi</label><input type="text" id="cfg-acenteWeb"></div>
         <div class="form-grup"><label>Açık Adres</label><textarea id="cfg-acenteAdres" style="height:45px; resize:none;"></textarea></div>
 
         <div class="form-bolum-baslik">Slogan Kartı Düzeni</div>
@@ -75,6 +81,15 @@
         </div>
         <div id="sosyal-medya-listeleme-alani"></div>
 
+        <div class="form-bolum-baslik">Excel / CSV Kayıt Yönetimi</div>
+        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:12px; margin-bottom:12px;">
+            <button type="button" onclick="indirExcelSablonu()" style="width:100%; padding:12px; margin-bottom:10px; background:#2563eb; color:white; border:none; border-radius:8px; font-weight:bold; cursor:pointer;">📥 Excel Şablonu İndir</button>
+            <label for="excel-upload-file" style="font-size:12px; color:#475569; display:block; margin-bottom:6px;">Doldurduğunuz CSV dosyasını yükleyin</label>
+            <input type="file" id="excel-upload-file" accept=".csv,text/csv" onchange="yuklenenExceliIsle(this)" style="width:100%; margin-bottom:10px;">
+            <button type="button" onclick="excelKayitlariDisariAktar()" style="width:100%; padding:12px; margin-bottom:10px; background:#10b981; color:white; border:none; border-radius:8px; font-weight:bold; cursor:pointer;">📤 Kayıtları Excel Olarak Dışa Aktar</button>
+            <div id="excel-kayit-sayisi" style="font-size:12px; color:#475569;">Mevcut kayıt: 0</div>
+        </div>
+
         <button type="button" onclick="ayarlariKaydet()" style="width: 100%; padding: 14px; background: #059669; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 15px; font-size:14px;">💾 Değişiklikleri Kaydet</button>
     </div>
 
@@ -92,6 +107,7 @@
             document.getElementById("cfg-logoYukseklik").value = localStorage.getItem("cfg_logoYukseklik") || "35";
             document.getElementById("cfg-acenteTel").value = localStorage.getItem("cfg_acenteTel") || "0555 123 45 67";
             document.getElementById("cfg-acenteMail").value = localStorage.getItem("cfg_acenteMail") || "iletisim@sigortapwa.com";
+            document.getElementById("cfg-acenteWeb").value = localStorage.getItem("cfg_acenteWeb") || "www.sigortapwa.com";
             document.getElementById("cfg-acenteAdres").value = localStorage.getItem("cfg_acenteAdres") || "Merkez Mah. Atatürk Cad. No:123 İstanbul";
             document.getElementById("cfg-sloganAlt").value = localStorage.getItem("cfg_sloganAlt") || "Poliçelerinizi kolayca takip edin, müşterilerinize en iyi hizmeti sunun.";
             document.getElementById("cfg-sosyalGizle").value = localStorage.getItem("cfg_sosyalGizle") || "false";
@@ -178,6 +194,7 @@
             localStorage.setItem("cfg_logoYukseklik", document.getElementById("cfg-logoYukseklik").value);
             localStorage.setItem("cfg_acenteTel", document.getElementById("cfg-acenteTel").value);
             localStorage.setItem("cfg_acenteMail", document.getElementById("cfg-acenteMail").value);
+            localStorage.setItem("cfg_acenteWeb", document.getElementById("cfg-acenteWeb").value);
             localStorage.setItem("cfg_acenteAdres", document.getElementById("cfg-acenteAdres").value);
             localStorage.setItem("cfg_sloganAlt", document.getElementById("cfg-sloganAlt").value);
             localStorage.setItem("cfg_sosyalGizle", document.getElementById("cfg-sosyalGizle").value);
@@ -187,6 +204,213 @@
             alert("Ayarlar başarıyla güncellendi.");
             location.href = "index.html";
         }
+
+        const recordsKey = 'sigorta-records';
+
+        function getSigortaRecords() {
+            return JSON.parse(localStorage.getItem(recordsKey) || '[]');
+        }
+
+        function setSigortaRecords(records) {
+            localStorage.setItem(recordsKey, JSON.stringify(records));
+            displayRecordCount();
+        }
+
+        function displayRecordCount() {
+            const alan = document.getElementById('excel-kayit-sayisi');
+            if (!alan) return;
+            const kayitlar = getSigortaRecords();
+            alan.innerText = 'Mevcut kayıt: ' + kayitlar.length;
+        }
+
+        function csvEscape(value) {
+            if (value == null) return '';
+            const str = String(value);
+            if (str.includes('"') || str.includes(',') || str.includes('\n') || str.includes('\r')) {
+                return '"' + str.replace(/"/g, '""') + '"';
+            }
+            return str;
+        }
+
+        function csvDecode(text) {
+            const rows = [];
+            let current = '';
+            let inQuotes = false;
+            let row = [];
+            for (let i = 0; i < text.length; i++) {
+                const ch = text[i];
+                if (inQuotes) {
+                    if (ch === '"') {
+                        if (text[i + 1] === '"') {
+                            current += '"';
+                            i += 1;
+                        } else {
+                            inQuotes = false;
+                        }
+                    } else {
+                        current += ch;
+                    }
+                } else {
+                    if (ch === '"') {
+                        inQuotes = true;
+                    } else if (ch === ',') {
+                        row.push(current);
+                        current = '';
+                    } else if (ch === '\r') {
+                        continue;
+                    } else if (ch === '\n') {
+                        row.push(current);
+                        rows.push(row);
+                        row = [];
+                        current = '';
+                    } else {
+                        current += ch;
+                    }
+                }
+            }
+            if (current !== '' || row.length > 0) {
+                row.push(current);
+                rows.push(row);
+            }
+            return rows;
+        }
+
+        function downloadCsv(filename, rows) {
+            const csv = rows.map(r => r.map(csvEscape).join(',')).join('\r\n');
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.setAttribute('href', url);
+            link.setAttribute('download', filename);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }
+
+        function indirExcelSablonu() {
+            const basliklar = [
+                'Poliçe No',
+                'Şirket Adı',
+                'Sigorta Türü',
+                'Poliçe Durumu',
+                'Sigorta Süresi',
+                'Tanzim Tarihi',
+                'Başlangıç Tarihi',
+                'Bitiş Tarihi',
+                'Sigortalı Adı Soyadı',
+                'Sigorta Ettiren Adı Soyadı',
+                'Sigorta Ettiren Cep Telefonu',
+                'Müşteri Cep Telefonları'
+            ];
+            downloadCsv('sigorta-sablonu.csv', [basliklar]);
+        }
+
+        function mapExcelHeader(header) {
+            const turkish = {
+                'Poliçe No': 'policeno',
+                'Şirket Adı': 'sirket',
+                'Sigorta Türü': 'tur',
+                'Poliçe Durumu': 'durum',
+                'Sigorta Süresi': 'suresi',
+                'Tanzim Tarihi': 'tanzim',
+                'Başlangıç Tarihi': 'baslangic',
+                'Bitiş Tarihi': 'bitis',
+                'Sigortalı Adı Soyadı': 'sigortali',
+                'Sigorta Ettiren Adı Soyadı': 'ettirenAdSoyad',
+                'Sigorta Ettiren Cep Telefonu': 'ettirenTelefon',
+                'Müşteri Cep Telefonları': 'telefonlar'
+            };
+            return turkish[header.trim()] || header.trim();
+        }
+
+        function pushImportedRecords(records) {
+            const mevcut = getSigortaRecords();
+            records.forEach(record => {
+                const id = record.policeno || record.sigortali || Date.now().toString();
+                const index = mevcut.findIndex(item => item.policeno && item.policeno === record.policeno);
+                if (index >= 0) {
+                    mevcut[index] = { ...mevcut[index], ...record, updatedAt: new Date().toISOString() };
+                } else {
+                    mevcut.push({ ...record, id: Date.now().toString(), createdAt: new Date().toISOString() });
+                }
+            });
+            setSigortaRecords(mevcut);
+        }
+
+        function yuklenenExceliIsle(input) {
+            if (!input.files || !input.files[0]) return;
+            const file = input.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const text = e.target.result;
+                const satirlar = csvDecode(text.trim());
+                if (satirlar.length < 2) {
+                    alert('CSV dosyasında en az bir veri satırı olmalıdır.');
+                    return;
+                }
+                const headers = satirlar[0].map(mapExcelHeader);
+                const records = satirlar.slice(1).map(row => {
+                    const kayit = {};
+                    row.forEach((value, index) => {
+                        const key = headers[index];
+                        if (!key) return;
+                        kayit[key] = value;
+                    });
+                    return kayit;
+                }).filter(r => Object.keys(r).length > 0);
+                if (records.length === 0) {
+                    alert('CSV dosyasında kayıt bulunamadı.');
+                    return;
+                }
+                pushImportedRecords(records);
+                alert(records.length + ' kayıt başarıyla yüklendi. Arama sayfasında kullanılabilir.');
+                input.value = '';
+            };
+            reader.readAsText(file, 'UTF-8');
+        }
+
+        function excelKayitlariDisariAktar() {
+            const kayitlar = getSigortaRecords();
+            if (!kayitlar.length) {
+                alert('İhracat için kayıt bulunamadı.');
+                return;
+            }
+            const basliklar = [
+                'Poliçe No',
+                'Şirket Adı',
+                'Sigorta Türü',
+                'Poliçe Durumu',
+                'Sigorta Süresi',
+                'Tanzim Tarihi',
+                'Başlangıç Tarihi',
+                'Bitiş Tarihi',
+                'Sigortalı Adı Soyadı',
+                'Sigorta Ettiren Adı Soyadı',
+                'Sigorta Ettiren Cep Telefonu',
+                'Müşteri Cep Telefonları'
+            ];
+            const rows = [basliklar];
+            kayitlar.forEach(item => {
+                rows.push([
+                    item.policeno || '',
+                    item.sirket || '',
+                    item.tur || '',
+                    item.durum || '',
+                    item.suresi || '',
+                    item.tanzim || '',
+                    item.baslangic || '',
+                    item.bitis || '',
+                    item.sigortali || '',
+                    item.ettirenAdSoyad || '',
+                    item.ettirenTelefon || '',
+                    item.telefonlar || ''
+                ]);
+            });
+            downloadCsv('sigorta-kayitlari.csv', rows);
+        }
+
+        document.addEventListener("DOMContentLoaded", displayRecordCount);
     </script>
     <script>
         if ("serviceWorker" in navigator) {

@@ -6,10 +6,10 @@
     <meta name="theme-color" content="#2563eb">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="Sigorta PWA">
+    <meta name="apple-mobile-web-app-title" content="Acente Takip Programı v.6.3">
     <link rel="manifest" href="manifest.json">
     <link rel="icon" href="icons/icon-192.svg" type="image/svg+xml">
-    <title>Gelişmiş Poliçe Arama</title>
+    <title>Acente Takip Programı v.6.3 - Arama</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
         body { background: #f0f2f5; display: flex; justify-content: center; min-height: 100vh; padding: 10px 0; }
@@ -148,7 +148,7 @@
                 <div class="form-grup">
                     <label>Özel Durum Süzgeci</label>
                     <select id="arama-ozeldurum">
-                        <option value="HEPSI">-- Tümü --</option><option value="IPTAL">İptal Edilenler</option><option value="BORC">Borcu Olanlar</option><option value="SURE_BITEN">Süresi Bitenler</option>
+                        <option value="HEPSI">-- Tümü --</option><option value="AKTIF">Aktif Olanlar</option><option value="IPTAL">İptal Edilenler</option><option value="BORC">Borcu Olanlar</option><option value="SURE_BITEN">Süresi Bitenler</option>
                     </select>
                 </div>
                 <div class="form-grup"><label>Kalan Gün (Eşit/Küçük)</label><input type="number" id="arama-kalangun"></div>
@@ -164,7 +164,10 @@
                 <div class="form-grup"><label>Vade Yılı</label><select id="vade-yil"><option value="HEPSI">Tümü</option><option>2026</option><option>2027</option></select></div>
             </div>
 
-            <button type="button" onclick="aramaYap()" style="width: 100%; padding: 12px; background: #10b981; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size:14px;">🔍 Poliçeleri Sorgula</button>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
+                <button type="button" onclick="aramaYap()" style="width: 100%; padding: 12px; background: #10b981; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size:14px;">🔍 Poliçeleri Sorgula</button>
+                <button type="button" onclick="temizleSonuclar()" style="width: 100%; padding: 12px; background: #64748b; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size:14px;">🧹 Sonuçları Temizle</button>
+            </div>
             <div class="form-bolum-baslik">Arama Sonuçları (<span id="sonuc-sayisi">0</span>)</div>
             <div class="sonuc-kapsayici" id="sonuc-listesi"></div>
         </main>
@@ -182,11 +185,38 @@
             aramaYap();
         });
 
-        const DB = [
-            { no: "554433/1", ad: "Ahmet Yılmaz", tc: "12345678901", plaka: "34ABC123", sirket: "Doğa", brans: "Trafik", durum: "IPTAL", borc: 0, bitis: "2026-03-15", kalanGun: 0, telefon: "05321234567", marka: "Renault", model: "Megane", cinsi: "01 - Otomobil" },
-            { no: "998877/0", ad: "Mehmet Demir", tc: "98765432102", plaka: "06XYZ99", sirket: "Türk Nippon", brans: "Kasko", durum: "AKTIF", borc: 1250, bitis: "2026-08-20", kalanGun: 45, telefon: "05451234567", marka: "BMW", model: "320i", cinsi: "01 - Otomobil" },
-            { no: "112233/2", ad: "Ayşe Kaya", tc: "45612378903", plaka: "35TUR12", sirket: "Allianz", brans: "Dask", durum: "AKTIF", borc: 0, bitis: "2026-03-28", kalanGun: 14, telefon: "05551234567", marka: "Toyota", model: "2025 model", cinsi: "01 - Otomobil" }
-        ];
+        const storedRecords = JSON.parse(localStorage.getItem('sigorta-records') || '[]');
+        const normalizedRecords = storedRecords.map(item => ({
+            ...item,
+            tc: item.tc || [],
+            plaka: item.plaka || item.plaka?.split ? String(item.plaka).split(',').map(s => s.trim()) : [],
+            telefon: item.telefon || item.telefon?.split ? String(item.telefon).split(',').map(s => s.trim()) : [],
+            borc: Number(item.borc || 0),
+            kalanGun: Number(item.kalanGun || 0),
+            marka: item.marka || '',
+            model: item.model || ''
+        }));
+        const DB = normalizedRecords.concat([
+            { no: "554433/1", ad: "Ahmet Yılmaz", tc: ["12345678901"], plaka: ["34ABC123", "34ABC456"], sirket: "Doğa", brans: "Trafik", durum: "IPTAL", borc: 0, bitis: "2026-03-15", kalanGun: 0, telefon: ["05321234567", "05551234567"], marka: "Renault", model: "Megane", cinsi: "01 - Otomobil" },
+            { no: "998877/0", ad: "Mehmet Demir", tc: ["98765432102"], plaka: ["06XYZ99"], sirket: "Türk Nippon", brans: "Kasko", durum: "AKTIF", borc: 1250, bitis: "2026-08-20", kalanGun: 45, telefon: ["05451234567"], marka: "BMW", model: "320i", cinsi: "01 - Otomobil" },
+            { no: "112233/2", ad: "Ayşe Kaya", tc: ["45612378903", "45612378904"], plaka: ["35TUR12", "34ABC123"], sirket: "Allianz", brans: "Dask", durum: "AKTIF", borc: 0, bitis: "2026-03-28", kalanGun: 14, telefon: ["05551234567"], marka: "Toyota", model: "2025 model", cinsi: "01 - Otomobil" }
+        ]);
+
+        function normalizeFieldValues(value) {
+            if (value == null) return [];
+            if (Array.isArray(value)) return value.map(item => String(item).trim()).filter(Boolean);
+            return String(value).split(",").map(item => item.trim()).filter(Boolean);
+        }
+
+        function fieldContains(value, filter, ignoreCase = false) {
+            if (!filter) return true;
+            const filters = normalizeFieldValues(filter);
+            const values = normalizeFieldValues(value);
+            if (ignoreCase) {
+                return filters.every(f => values.some(v => v.toLowerCase().includes(f.toLowerCase())));
+            }
+            return filters.every(f => values.some(v => v.includes(f)));
+        }
 
         function aramaYap() {
             const fAd = document.getElementById("arama-ad").value.toLowerCase();
@@ -208,12 +238,15 @@
             resArea.innerHTML = "";
 
             let res = DB.filter(p => {
-                const [y, m, d] = p.bitis.split("-");
+                const bitisParcalari = String(p.bitis || '').split("-");
+                const y = bitisParcalari[0] || '';
+                const m = bitisParcalari[1] || '';
+                const d = bitisParcalari[2] || '';
                 if (fAd && !p.ad.toLowerCase().includes(fAd)) return false;
                 if (fNo && !p.no.includes(fNo)) return false;
-                if (fTc && !p.tc.includes(fTc)) return false;
-                if (fPl && !p.plaka.toLowerCase().includes(fPl)) return false;
-                if (fTelefon && !String(p.telefon || "").toLowerCase().includes(fTelefon)) return false;
+                if (fTc && !fieldContains(p.tc, fTc, false)) return false;
+                if (fPl && !fieldContains(p.plaka, fPl, true)) return false;
+                if (fTelefon && !fieldContains(p.telefon, fTelefon, true)) return false;
                 if (fMarka && !String(p.marka || "").toLowerCase().includes(fMarka)) return false;
                 if (fModel && !String(p.model || "").toLowerCase().includes(fModel)) return false;
                 if (fCinsi !== "HEPSI" && String(p.cinsi || "") !== fCinsi) return false;
@@ -223,6 +256,7 @@
                 if (fGn !== "HEPSI" && d !== fGn) return false;
                 if (fAy !== "HEPSI" && m !== fAy) return false;
                 if (fYl !== "HEPSI" && y !== fYl) return false;
+                if (fOz === "AKTIF" && p.durum !== "AKTIF") return false;
                 if (fOz === "IPTAL" && p.durum !== "IPTAL") return false;
                 if (fOz === "BORC" && p.borc === 0) return false;
                 if (fOz === "SURE_BITEN" && p.kalanGun > 30) return false;
@@ -244,17 +278,24 @@
                 } else {
                     lbl = '<span class="etiket etiket-aktif">Aktif</span>';
                 }
+                const displayPlaka = normalizeFieldValues(p.plaka).join(", ").toUpperCase() || '-';
+                const displayTelefon = normalizeFieldValues(p.telefon).join(", ") || '-';
                 
                 resArea.innerHTML += '<div class="police-kart">' +
-                    '<div class="kart-baslik"><span>🚗 ' + p.plaka.toUpperCase() + '</span>' + lbl + '</div>' +
+                    '<div class="kart-baslik"><span>🚗 ' + displayPlaka + '</span>' + lbl + '</div>' +
                     '<div class="kart-detay"><strong>Müşteri:</strong> ' + p.ad + '</div>' +
                     '<div class="kart-detay"><strong>Poliçe No:</strong> ' + p.no + ' - ' + p.sirket + '</div>' +
-                    '<div class="kart-detay"><strong>Cep Telefonu:</strong> ' + (p.telefon || '-') + '</div>' +
+                    '<div class="kart-detay"><strong>Cep Telefonu:</strong> ' + displayTelefon + '</div>' +
                     '<div class="kart-detay"><strong>Araç:</strong> ' + (p.marka || '-') + ' ' + (p.model || '-') + ' / ' + (p.cinsi || '-') + '</div>' +
                     '<div class="kart-detay" style="color:#b91c1c;"><strong>Vade:</strong> ' + 
                     p.bitis.split("-").reverse().join(".") + ' (' + p.kalanGun + ' Gün)</div>' +
                     '</div>';
             });
+        }
+
+        function temizleSonuclar() {
+            document.getElementById("sonuc-listesi").innerHTML = '<p style="font-size:13px; color:#475569; margin-top:10px;">Sonuçlar temizlendi.</p>';
+            document.getElementById("sonuc-sayisi").innerText = 0;
         }
     </script>
     <script>

@@ -6,10 +6,10 @@
     <meta name="theme-color" content="#2563eb">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="Sigorta PWA">
+    <meta name="apple-mobile-web-app-title" content="Acente Takip Programı v.6.3">
     <link rel="manifest" href="manifest.json">
     <link rel="icon" href="icons/icon-192.svg" type="image/svg+xml">
-    <title>Acente İstatistikleri</title>
+    <title>Acente Takip Programı v.6.3 - İstatistik</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
         body { background: #f0f2f5; display: flex; justify-content: center; min-height: 100vh; padding: 10px 0; }
@@ -34,9 +34,12 @@
     <div class="mobil-ekran">
         <header><h1 style="font-weight: bold; font-size: 16px; color:#1d4ed8;" id="ist-acente-adi">Güven Sigorta</h1></header>
         <main>
-            <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
-                <button type="button" onclick="location.href='index.html';" style="padding: 6px 12px; background: #e5e7eb; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size:13px;">← Ana Menü</button>
-                <h2 style="font-size: 14px; font-weight: bold;">Acente Performans Özeti</h2>
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; justify-content: space-between; flex-wrap: wrap;">
+                <div style="display:flex; align-items:center; gap:15px;">
+                    <button type="button" onclick="location.href='index.html';" style="padding: 6px 12px; background: #e5e7eb; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size:13px;">← Ana Menü</button>
+                    <h2 style="font-size: 14px; font-weight: bold; margin:0;">Acente Performans Özeti</h2>
+                </div>
+                <button type="button" onclick="temizleIstatistik()" style="padding: 8px 12px; background: #64748b; color: white; border: none; border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer;">🧹 Sonuçları Temizle</button>
             </div>
 
             <div class="form-bolum-baslik">Operasyonel Durum</div>
@@ -120,6 +123,22 @@
         renderOran("arac-cinsi-listesi", "aracCinsi");
         renderOran("sure-listesi", "sure");
         renderSureKarsilastirma();
+
+        function temizleIstatistik() {
+            const kaplar = [
+                "branş-listesi",
+                "sirket-listesi",
+                "arac-cinsi-listesi",
+                "sure-listesi",
+                "sure-karsilastirma"
+            ];
+            kaplar.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.innerHTML = '<p style="font-size:13px; color:#475569; margin:0;">İstatistik verileri temizlendi.</p>';
+                }
+            });
+        }
     </script>
     <script>
         if ("serviceWorker" in navigator) {

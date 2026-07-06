@@ -7,9 +7,12 @@ const ASSETS = [
   "istatistik.html",
   "hakkinda.html",
   "ayarlar.html",
+  "offline.html",
   "manifest.json",
   "icons/icon-192.svg",
-  "icons/icon-512.svg"
+  "icons/icon-512.svg",
+  "depo/ana-tanitim-gorseli.svg",
+  "depo/acente-logo.svg"
 ];
 
 self.addEventListener("install", (event) => {
@@ -33,11 +36,13 @@ self.addEventListener("fetch", (event) => {
   event.respondWith(
     fetch(request)
       .then((response) => {
-        const copy = response.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
+        if (response && response.status === 200) {
+          const copy = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
+        }
         return response;
       })
-      .catch(() => caches.match(request).then((cached) => cached || caches.match("./index.html")))
+      .catch(() => caches.match(request).then((cached) => cached || caches.match("offline.html")))
   );
 });
 

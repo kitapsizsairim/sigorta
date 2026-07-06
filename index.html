@@ -6,10 +6,10 @@
     <meta name="theme-color" content="#2563eb">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="Sigorta PWA">
+    <meta name="apple-mobile-web-app-title" content="Acente Takip Programı v.6.3">
     <link rel="manifest" href="manifest.json">
     <link rel="icon" href="icons/icon-192.svg" type="image/svg+xml">
-    <title>Acente Takip PWA</title>
+    <title>Acente Takip Programı v.6.3</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
         body { background: #f0f2f5; display: flex; justify-content: center; min-height: 100vh; padding: 10px 0; }
@@ -19,16 +19,21 @@
         main { padding: 0 0 15px 0; flex: 1; display: flex; flex-direction: column; }
         
         /* Üst Profil Kartı Bölümü */
-        .profil-ust-zemin { background: linear-gradient(to bottom, #e0f2fe, #f0f9ff); padding: 25px 15px 20px 15px; text-align: center; border-bottom: 1px solid #e0f2fe; margin-bottom: 15px; }
-        .profil-logo-yuvarlak { width: 75px; height: 75px; background: #ffffff; border-radius: 50%; margin: 0 auto 12px auto; box-shadow: 0 4px 10px rgba(0,0,0,0.08); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .profil-ust-zemin { background: linear-gradient(to bottom, #e0f2fe, #f0f9ff); padding: 18px 15px 12px 15px; border-bottom: 1px solid #e0f2fe; margin-bottom: 10px; }
+        .profil-header-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+        .profil-baslik-alan { text-align: left; min-width: 0; flex: 1; }
+        .profil-baslik-alan .profil-acente-adi { margin-bottom: 4px; }
+        .profil-logo-yuvarlak { width: 64px; height: 64px; background: #ffffff; border-radius: 50%; box-shadow: 0 3px 8px rgba(0,0,0,0.08); display: flex; align-items: center; justify-content: center; overflow: hidden; }
         .profil-logo-yuvarlak img { width: 100%; height: 100%; object-fit: cover; }
-        .profil-logo-yuvarlak .logo-varsayilan { font-size: 28px; font-weight: bold; color: #1d4ed8; }
-        .profil-acente-adi { font-size: 19px; font-weight: 870; color: #0f172a; margin-bottom: 8px; text-transform: capitalize; }
-        .profil-iletisim-satir { font-size: 12px; color: #475569; margin-bottom: 5px; display: flex; align-items: center; justify-content: center; gap: 4px; }
+        .profil-logo-yuvarlak .logo-varsayilan { font-size: 26px; font-weight: bold; color: #1d4ed8; }
+        .profil-acente-adi { font-size: 17px; font-weight: 870; color: #0f172a; margin-bottom: 6px; text-transform: capitalize; }
+        .profil-iletisim-satir { font-size: 11px; color: #475569; margin-bottom: 4px; display: flex; align-items: center; justify-content: flex-start; gap: 6px; flex-wrap: wrap; }
+        .iletisim-alani { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; justify-content: flex-start; }
+        .iletisim-badge { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 5px 8px; font-size: 11px; color: #334155; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; }
         
-        /* Sosyal Medya Rozet Yerleşimi */
-        .profil-sosyal-grid { display: flex; justify-content: center; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
-        .sosyal-rozet { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 5px 10px; font-size: 11px; color: #334155; font-weight: 600; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
+        /* Sosyal Medya / İletişim Rozet Yerleşimi */
+        .profil-sosyal-grid { display: flex; justify-content: flex-start; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+        .sosyal-rozet { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 6px 10px; font-size: 12px; color: #334155; font-weight: 600; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
 
         /* Tanıtım Görsel Alanı */
         .kurumsal-gorsel-alani { padding: 0 15px; text-align: center; margin-bottom: 15px; }
@@ -56,6 +61,9 @@
         .form-grup input, .form-grup select { width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 13px; outline: none; }
         footer { padding: 12px; background: #f9fafb; border-top: 1px solid #e5e7eb; text-align: center; border-radius: 0 0 12px 12px; font-size: 11px; color: #94a3b8; }
         .hidden { display: none !important; }
+        .firebase-card { margin: 10px 15px; padding: 12px; background: #eff6ff; border: 1px solid #dbeafe; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+        .firebase-card span { font-size: 13px; color: #1e293b; }
+        .firebase-card button { padding: 10px 14px; background: #4285f4; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: 700; }
         /* SW güncelleme bildirim çubuğu */
         #sw-update-banner { position: fixed; left: 50%; transform: translateX(-50%); bottom: 18px; background:#111827; color: #fff; padding:10px 14px; border-radius:10px; box-shadow:0 6px 20px rgba(0,0,0,0.25); display:flex; gap:10px; align-items:center; z-index:9999; font-size:13px; }
         #sw-update-banner button { background:#10b981; color:#fff; border:none; padding:6px 10px; border-radius:8px; cursor:pointer; font-weight:700; }
@@ -67,21 +75,28 @@
             <div class="ust-bar" style="align-items: center; gap: 10px;">
                 <div class="logo-alan" style="display:flex; align-items:center; gap:10px;">
                     <img src="icons/icon-192.svg" alt="Logo" style="width:26px; height:26px;">
-                    <h1 style="font-weight: bold; font-size: 15px; color: #1d4ed8; margin:0;">Poliçe Takip Programı</h1>
+                    <h1 id="pwa-app-baslik-text" style="font-weight: bold; font-size: 15px; color: #1d4ed8; margin:0;">Acente Takip Programı</h1>
                 </div>
-                <div style="font-size:11px; padding:3px 8px; background:#e5e7eb; border-radius:4px; font-weight: 600;">PWA v1.0</div>
+                <div id="pwa-app-versiyon-text" style="font-size:11px; padding:3px 8px; background:#e5e7eb; border-radius:4px; font-weight: 600;">v.6.3</div>
             </div>
         </header>
+        <div class="firebase-card" id="firebase-auth-card">
+            <span id="firebase-user-label">Google ile giriş yapılmadı.</span>
+            <button type="button" id="firebase-auth-btn" onclick="toggleFirebaseAuth()">Gmail ile Giriş Yap</button>
+        </div>
         <main>
             <div id="ana-sayfa-alani">
                 <div class="profil-ust-zemin">
-                    <div class="profil-logo-yuvarlak" id="pwa-profil-logo-alan"></div>
-                    <div class="profil-acente-adi" id="pwa-acente-adi-text">Acente Yükleniyor</div>
-                    <div class="profil-iletisim-satir">📞 <span id="pwa-acente-tel-text">0000</span></div>
+                    <div class="profil-header-row">
+                        <div class="profil-logo-yuvarlak" id="pwa-profil-logo-alan"></div>
+                        <div class="profil-baslik-alan">
+                            <div class="profil-acente-adi" id="pwa-acente-adi-text">Acente</div>
+                            <div class="iletisim-alani" id="pwa-contact-grid-alan"></div>
+                        </div>
+                    </div>
                     <div class="profil-iletisim-satir">📍 <span id="pwa-acente-adres-text">Adres</span></div>
-                    <!-- ℹ️ Yeni İletişim Bilgileri Rozet Kutusu -->
-                    <div class="profil-sosyal-grid" id="pwa-sosyal-grid-alan"></div>
                 </div>
+                <div class="profil-sosyal-grid" id="pwa-sosyal-grid-alan"></div>
 
                 <div class="kurumsal-gorsel-alani" id="pwa-kurumsal-gorsel-bloku">
                     <!-- Dinamik Değişebilir Orta Resim Elemanı -->
@@ -111,12 +126,14 @@
                     <button type="button" onclick="document.getElementById('giris-ekrani').classList.add('hidden'); document.getElementById('ana-sayfa-alani').classList.remove('hidden');" style="padding: 6px 12px; background: #e5e7eb; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size:13px;">← Geri</button>
                     <h2 style="font-size: 14px; font-weight: bold;">Poliçe Girişi</h2>
                 </div>
-                <form action="odeme.html" method="GET">
+                <form action="odeme.html" method="GET" onsubmit="kaydetGirisFormu()">
+                    <div style="font-size:13px;color:#475569;margin-bottom:14px;line-height:1.5;">Bu adımda yalnızca temel poliçe bilgilerini girmeniz yeterlidir. Diğer detaylar sonraki sayfada tamamlanabilir.</div>
+                    <button type="button" onclick="indirExcelSablonu()" style="width:100%;padding:12px;margin-bottom:14px;background:#2563eb;color:white;border:none;border-radius:10px;font-weight:bold;cursor:pointer;">📥 Excel Şablonu İndir</button>
                     <div class="form-bolum-baslik">Poliçe Bilgileri</div>
-                    <div class="form-grup"><label>Poliçe No *</label><input type="text" name="policeno" required></div>
+                    <div class="form-grup"><label>Poliçe No</label><input type="text" name="policeno"></div>
                     <div class="form-grup">
-                        <label>Şirket Adı *</label>
-                        <select name="sirket" required>
+                        <label>Şirket Adı</label>
+                        <select name="sirket">
                             <option value="">Seçiniz</option>
                             <option>Acıbadem</option>
                             <option>Acn Türk</option>
@@ -157,8 +174,8 @@
                         </select>
                     </div>
                     <div class="form-grup">
-                        <label>Sigorta Türü *</label>
-                        <select name="tur" required>
+                        <label>Sigorta Türü</label>
+                        <select name="tur">
                             <option value="">Seçiniz</option>
                             <option>Trafik</option>
                             <option>Kasko</option>
@@ -179,30 +196,31 @@
                             <option>Mesleki Sorumluluk</option>
                         </select>
                     </div>
-                    <div class="form-grup"><label>Tanzim Tarihi *</label><input type="date" name="tanzim" required></div>
-                    <div class="form-grup"><label>Başlangıç Tarihi *</label><input type="date" name="baslangic" required></div>
-                    <div class="form-grup"><label>Bitiş Tarihi *</label><input type="date" name="bitis" required></div>
-                    <div class="form-grup"><label>Plaka</label><input type="text" name="plaka" placeholder="Örn: 34ABC123"></div>
-                    <div class="form-grup"><label>Belge Seri No</label><input type="text" name="belgeSeriNo" placeholder="Örn: AB123456"></div>
                     <div class="form-grup">
                         <label>Poliçe Durumu</label>
                         <select name="durum">
-                            <option value="Aktif">Aktif</option>
-                            <option value="İptal">İptal</option>
-                            <option value="Süresi Bitmiş">Süresi Bitmiş</option>
+                            <option value="">Seçiniz</option>
+                            <option value="AKTIF">Aktif</option>
+                            <option value="IPTAL">İptal</option>
+                            <option value="SURE_BITEN">Süresi Bitmiş</option>
                         </select>
                     </div>
                     <div class="form-grup">
                         <label>Sigorta Süresi</label>
-                        <select name="sure">
-                            <option value="Yıllık">Yıllık</option>
-                            <option value="2 Aylık">2 Aylık</option>
-                            <option value="4 Aylık">4 Aylık</option>
-                            <option value="6 Aylık">6 Aylık</option>
+                        <select name="suresi">
+                            <option value="">Seçiniz</option>
+                            <option value="YILLIK">Yıllık</option>
+                            <option value="2_AYLIK">2 Aylık</option>
+                            <option value="4_AYLIK">4 Aylık</option>
+                            <option value="6_AYLIK">6 Aylık</option>
                         </select>
                     </div>
+                    <div class="form-grup"><label>Tanzim Tarihi</label><input type="date" name="tanzim"></div>
+                    <div class="form-grup"><label>Başlangıç Tarihi</label><input type="date" name="baslangic"></div>
+                    <div class="form-grup"><label>Bitiş Tarihi</label><input type="date" name="bitis"></div>
+
                     <div class="form-bolum-baslik">Müşteri Bilgileri</div>
-                    <div class="form-grup"><label>Sigortalı Adı Soyadı *</label><input type="text" name="sigortali" required></div>
+                    <div class="form-grup"><label>Sigortalı Adı Soyadı</label><input type="text" name="sigortali"></div>
                     <div class="form-grup"><label>Sigorta Ettiren Adı Soyadı</label><input type="text" name="ettirenAdSoyad" placeholder="Ad Soyad"></div>
                     <div class="form-grup"><label>Sigorta Ettiren Cep Telefonu</label><input type="text" name="ettirenTelefon" placeholder="Örn: 0532 123 45 67"></div>
                     <div class="form-grup"><label>Müşteri Cep Telefonları</label><input type="text" name="telefonlar" placeholder="Birden fazla ise virgülle ayırın"></div>
@@ -225,20 +243,31 @@
         const nGizle = localStorage.getItem("cfg_logoGizle") === "true";
         const anaResmData = localStorage.getItem("cfg_anaResmData") || "depo/ana-tanitim-gorseli.svg";
         const nTel = localStorage.getItem("cfg_acenteTel") || "0555 123 45 67";
+        const nMail = localStorage.getItem("cfg_acenteMail") || localStorage.getItem("h_eposta") || "iletisim@sigortapwa.com";
+        const nWeb = localStorage.getItem("h_web") || localStorage.getItem("cfg_acenteWeb") || "www.sigortapwa.com";
         const nAdres = localStorage.getItem("cfg_acenteAdres") || "Merkez Mah. Atatürk Cad. No:123 İstanbul";
         const nSloAlt = localStorage.getItem("cfg_sloganAlt") || localStorage.getItem("h_slogan") || "Poliçelerinizi kolayca takip edin, müşterilerinize en iyi hizmeti sunun.";
-        const appBaslik = localStorage.getItem("h_progAd") || "Mobil Otomasyon";
-        const appVersiyon = localStorage.getItem("h_progVersiyon") || "v1.0.0 PWA";
+        const appBaslik = localStorage.getItem("h_progAd") || "Acente Takip Programı";
+        const appVersiyon = localStorage.getItem("h_progVersiyon") || "v.6.3";
         const sosGizle = localStorage.getItem("cfg_sosyalGizle") === "true";
         const rArka = localStorage.getItem("cfg_renkArkaplan") || "#ffffff";
+        const contactGrid = document.getElementById("pwa-contact-grid-alan");
+        if (contactGrid) {
+            const hostname = nWeb.replace(/^(https?:\/\/)/, '');
+            const url = hostname ? 'https://' + hostname : 'https://www.sigortapwa.com';
+            contactGrid.innerHTML = '<span class="iletisim-badge">📞 ' + nTel + '</span>' +
+                                    '<a class="iletisim-badge" href="mailto:' + nMail + '">✉️ ' + nMail + '</a>' +
+                                    '<a class="iletisim-badge" href="' + url + '" target="_blank" rel="noopener noreferrer">🌐 ' + nWeb + '</a>';
+        }
         const nG = parseInt(localStorage.getItem("cfg_logoGenislik") || "35", 10);
         const nY = parseInt(localStorage.getItem("cfg_logoYukseklik") || "35", 10);
 
         document.getElementById("pwa-acente-adi-text").innerText = nAd;
-        document.getElementById("pwa-acente-tel-text").innerText = nTel;
         document.getElementById("pwa-acente-adres-text").innerText = nAdres;
-        document.getElementById("pwa-app-baslik-text").innerText = appBaslik;
-        document.getElementById("pwa-app-versiyon-text").innerText = appVersiyon;
+        const pwaAppBaslikEl = document.getElementById("pwa-app-baslik-text");
+        if (pwaAppBaslikEl) pwaAppBaslikEl.innerText = appBaslik;
+        const pwaAppVersiyonEl = document.getElementById("pwa-app-versiyon-text");
+        if (pwaAppVersiyonEl) pwaAppVersiyonEl.innerText = appVersiyon;
         document.getElementById("pwa-slogan-alt-aciklama").innerText = nSloAlt;
         const sloganEl = document.getElementById("pwa-slogan-alt-aciklama");
         if (!sloganEl.innerText || sloganEl.innerText.trim() === "" || sloganEl.innerText === "Yükleniyor...") {
@@ -297,9 +326,7 @@
         const cfgSosyalListesi = JSON.parse(localStorage.getItem("cfg_sosyalMedyaListesi") || "null") || [];
         const sosyalBilgiler = [
             {tur: "Facebook", veri: localStorage.getItem("h_facebook") || cfgSosyalListesi.find(i => i.tur === "Facebook")?.veri || "facebook.com/sigortapwa"},
-            {tur: "Instagram", veri: localStorage.getItem("h_instagram") || cfgSosyalListesi.find(i => i.tur === "Instagram")?.veri || "@sigortapwa"},
-            {tur: "E-Posta", veri: localStorage.getItem("h_eposta") || localStorage.getItem("cfg_acenteMail") || cfgSosyalListesi.find(i => i.tur === "E-Posta")?.veri || "iletisim@sigortapwa.com"},
-            {tur: "Web", veri: localStorage.getItem("h_web") || cfgSosyalListesi.find(i => i.tur === "Web")?.veri || "www.sigortapwa.com"}
+            {tur: "Instagram", veri: localStorage.getItem("h_instagram") || cfgSosyalListesi.find(i => i.tur === "Instagram")?.veri || "@sigortapwa"}
         ];
         const sosAlan = document.getElementById("pwa-sosyal-grid-alan");
         sosAlan.innerHTML = "";
@@ -316,10 +343,8 @@
         // Eğer hiçbir sosyal bilgi görünmüyorsa, temel örnek verilerle doldur
         if (sosAlan.innerHTML.trim() === "") {
             const defaults = [
-                {tur: "Facebook", veri: "facebook.com/sigortapwa"},
-                {tur: "Instagram", veri: "@sigortapwa"},
-                {tur: "E-Posta", veri: "iletisim@sigortapwa.com"},
-                {tur: "Web", veri: "www.sigortapwa.com"}
+                    {tur: "Facebook", veri: "facebook.com/sigortapwa"},
+                {tur: "Instagram", veri: "@sigortapwa"}
             ];
             defaults.forEach(item => {
                 let simge = "🌐 ";
@@ -332,7 +357,7 @@
 
         const girisForm = document.querySelector('#giris-ekrani form');
         if (girisForm) {
-            const kayitKodu = 'sigorta-giris-form';
+            const kayitKodu = 'sigorta-form-data';
             const kayitli = JSON.parse(localStorage.getItem(kayitKodu) || '{}');
             Array.from(girisForm.elements).forEach(el => {
                 if (!el.name || el.tagName === 'BUTTON') return;
@@ -352,6 +377,198 @@
                 el.addEventListener('change', kaydet);
             });
         }
+
+        const recordsKey = 'sigorta-records';
+
+        function getSigortaRecords() {
+            return JSON.parse(localStorage.getItem(recordsKey) || '[]');
+        }
+
+        function setSigortaRecords(records) {
+            localStorage.setItem(recordsKey, JSON.stringify(records));
+        }
+
+        function csvEscape(value) {
+            if (value == null) return '';
+            const str = String(value);
+            if (str.includes('"') || str.includes(',') || str.includes('\n') || str.includes('\r')) {
+                return '"' + str.replace(/"/g, '""') + '"';
+            }
+            return str;
+        }
+
+        function downloadCsv(filename, rows) {
+            const csv = rows.map(r => r.map(csvEscape).join(',')).join('\r\n');
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.setAttribute('href', url);
+            link.setAttribute('download', filename);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }
+
+        function indirExcelSablonu() {
+            const basliklar = [
+                'Poliçe No',
+                'Şirket Adı',
+                'Sigorta Türü',
+                'Poliçe Durumu',
+                'Sigorta Süresi',
+                'Tanzim Tarihi',
+                'Başlangıç Tarihi',
+                'Bitiş Tarihi',
+                'Sigortalı Adı Soyadı',
+                'Sigorta Ettiren Adı Soyadı',
+                'Sigorta Ettiren Cep Telefonu',
+                'Müşteri Cep Telefonları'
+            ];
+            downloadCsv('sigorta-sablonu.csv', [basliklar]);
+        }
+
+        function kaydetGirisFormu() {
+            const kayitKodu = 'sigorta-form-data';
+            const form = document.querySelector('#giris-ekrani form');
+            if (!form) return;
+            const yeni = {};
+            Array.from(form.elements).forEach(item => {
+                if (!item.name || item.tagName === 'BUTTON') return;
+                yeni[item.name] = item.type === 'checkbox' ? item.checked : item.value;
+            });
+            localStorage.setItem(kayitKodu, JSON.stringify(yeni));
+
+            const kayitlar = getSigortaRecords();
+            const mevcutIndex = yeni.policeno ? kayitlar.findIndex(r => r.policeno === yeni.policeno) : -1;
+            const kayit = {
+                policeno: yeni.policeno || '',
+                sirket: yeni.sirket || '',
+                tur: yeni.tur || '',
+                durum: yeni.durum || '',
+                suresi: yeni.suresi || '',
+                tanzim: yeni.tanzim || '',
+                baslangic: yeni.baslangic || '',
+                bitis: yeni.bitis || '',
+                sigortali: yeni.sigortali || '',
+                ettirenAdSoyad: yeni.ettirenAdSoyad || '',
+                ettirenTelefon: yeni.ettirenTelefon || '',
+                telefonlar: yeni.telefonlar || '',
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+            };
+            if (mevcutIndex >= 0) {
+                kayitlar[mevcutIndex] = { ...kayitlar[mevcutIndex], ...kayit };
+            } else {
+                kayitlar.push(kayit);
+            }
+            setSigortaRecords(kayitlar);
+            if (typeof window.saveRecordToFirestore === 'function') {
+                window.saveRecordToFirestore(kayit).catch(err => console.warn('Firebase kaydı sırasında hata:', err));
+            }
+        }
+    </script>
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js';
+        import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js';
+        import { getFirestore, collection, addDoc, query, where, getDocs, serverTimestamp } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js';
+
+        const firebaseConfig = {
+            apiKey: 'YOUR_API_KEY',
+            authDomain: 'YOUR_PROJECT_ID.firebaseapp.com',
+            projectId: 'YOUR_PROJECT_ID',
+            storageBucket: 'YOUR_PROJECT_ID.appspot.com',
+            messagingSenderId: 'YOUR_MESSAGING_SENDER_ID',
+            appId: 'YOUR_APP_ID'
+        };
+
+        let firebaseAuth = null;
+        let firebaseDb = null;
+        let firebaseUser = null;
+
+        const authButton = document.getElementById('firebase-auth-btn');
+        const authLabel = document.getElementById('firebase-user-label');
+
+        window.toggleFirebaseAuth = async function () {
+            alert('Firebase yapılandırması tamamlanmadı. Lütfen index.html içinde firebaseConfig bilgilerinizi girin.');
+        };
+
+        function isFirebaseConfigured() {
+            return firebaseConfig.apiKey && !firebaseConfig.apiKey.includes('YOUR_API_KEY');
+        }
+
+        function updateFirebaseUi(user, message) {
+            if (!authLabel || !authButton) return;
+            if (message) {
+                authLabel.innerText = message;
+                authButton.innerText = firebaseUser ? 'Çıkış Yap' : 'Gmail ile Giriş Yap';
+                authButton.disabled = false;
+                return;
+            }
+            if (user) {
+                authLabel.innerText = 'Giriş yapan hesap: ' + (user.email || user.displayName || user.uid);
+                authButton.innerText = 'Çıkış Yap';
+            } else {
+                authLabel.innerText = 'Google ile giriş yapılmadı.';
+                authButton.innerText = 'Gmail ile Giriş Yap';
+            }
+            authButton.disabled = false;
+        }
+
+        async function initFirebase() {
+            if (!isFirebaseConfigured()) {
+                updateFirebaseUi(null, 'Firebase config eksik. lütfen index.html içinde ayarları güncelleyin.');
+                return;
+            }
+            const app = initializeApp(firebaseConfig);
+            firebaseAuth = getAuth(app);
+            firebaseDb = getFirestore(app);
+            const provider = new GoogleAuthProvider();
+
+            onAuthStateChanged(firebaseAuth, async (user) => {
+                firebaseUser = user;
+                updateFirebaseUi(user);
+                if (user) {
+                    await loadRecordsFromFirestore();
+                }
+            });
+
+            window.toggleFirebaseAuth = async function () {
+                if (!firebaseAuth) return;
+                if (firebaseUser) {
+                    await signOut(firebaseAuth);
+                } else {
+                    try {
+                        await signInWithPopup(firebaseAuth, provider);
+                    } catch (err) {
+                        alert('Google girişinde hata: ' + err.message);
+                    }
+                }
+            };
+        }
+
+        async function saveRecordToFirestore(record) {
+            if (!firebaseUser || !firebaseDb) return;
+            const collectionRef = collection(firebaseDb, 'acente_records');
+            await addDoc(collectionRef, {
+                ...record,
+                userId: firebaseUser.uid,
+                userEmail: firebaseUser.email || '',
+                timestamp: serverTimestamp()
+            });
+        }
+        window.saveRecordToFirestore = saveRecordToFirestore;
+
+        async function loadRecordsFromFirestore() {
+            if (!firebaseUser || !firebaseDb) return;
+            const collectionRef = collection(firebaseDb, 'acente_records');
+            const q = query(collectionRef, where('userId', '==', firebaseUser.uid));
+            const snapshot = await getDocs(q);
+            const loaded = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            console.log('Firebase kayıtları yüklendi:', loaded.length);
+        }
+
+        initFirebase();
     </script>
         <script>
         if ("serviceWorker" in navigator) {
