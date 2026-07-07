@@ -12,58 +12,63 @@
     <title>Acente Takip Programı v.6.3</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
-        body { background: #f0f2f5; display: flex; justify-content: center; min-height: 100vh; padding: 10px 0; }
-        .mobil-ekran { width: 100%; max-width: 430px; background: #ffffff; box-shadow: 0 4px 20px rgba(0,0,0,0.1); border-radius: 12px; display: flex; flex-direction: column; justify-content: space-between; min-height: 90vh; }
-        header { border-bottom: 1px solid #e5e7eb; padding: 12px 15px; background: #ffffff; border-radius: 12px 12px 0 0; }
+        body { background: #e7eefc; display: flex; justify-content: center; min-height: 100vh; padding: 12px 0; }
+        .mobil-ekran { width: 100%; max-width: 430px; background: #ffffff; box-shadow: 0 18px 55px rgba(15, 23, 42, 0.12); border-radius: 20px; display: flex; flex-direction: column; justify-content: space-between; min-height: 92vh; border: 1px solid rgba(148, 163, 184, 0.18); }
+        header { border-bottom: 1px solid #e5e7eb; padding: 16px 18px; background: #ffffff; border-radius: 20px 20px 0 0; }
         .ust-bar { display: flex; justify-content: space-between; align-items: center; }
-        main { padding: 0 0 15px 0; flex: 1; display: flex; flex-direction: column; }
+        main { padding: 10px 0 18px 0; flex: 1; display: flex; flex-direction: column; }
         
         /* Üst Profil Kartı Bölümü */
-        .profil-ust-zemin { background: linear-gradient(to bottom, #e0f2fe, #f0f9ff); padding: 18px 15px 12px 15px; border-bottom: 1px solid #e0f2fe; margin-bottom: 10px; }
-        .profil-header-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
-        .profil-baslik-alan { text-align: left; min-width: 0; flex: 1; }
-        .profil-baslik-alan .profil-acente-adi { margin-bottom: 4px; }
-        .profil-logo-yuvarlak { width: 64px; height: 64px; background: #ffffff; border-radius: 50%; box-shadow: 0 3px 8px rgba(0,0,0,0.08); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .profil-ust-zemin { background: linear-gradient(180deg, #eff6ff 0%, #ffffff 100%); padding: 18px 18px 16px 18px; border: 1px solid #dbeafe; border-radius: 20px; margin: 0 15px 12px 15px; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.35); }
+        .profil-header-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+        .profil-baslik-alan { text-align: left; min-width: 0; flex: 1; display: flex; flex-direction: column; gap: 4px; }
+        .profil-baslik-alan .profil-acente-adi { margin-bottom: 0; }
+        .profil-logo-yuvarlak { width: 72px; height: 72px; background: #ffffff; border-radius: 50%; box-shadow: 0 10px 30px rgba(15,23,42,0.08); display: flex; align-items: center; justify-content: center; overflow: hidden; }
         .profil-logo-yuvarlak img { width: 100%; height: 100%; object-fit: cover; }
-        .profil-logo-yuvarlak .logo-varsayilan { font-size: 26px; font-weight: bold; color: #1d4ed8; }
-        .profil-acente-adi { font-size: 17px; font-weight: 870; color: #0f172a; margin-bottom: 6px; text-transform: capitalize; }
-        .profil-iletisim-satir { font-size: 11px; color: #475569; margin-bottom: 4px; display: flex; align-items: center; justify-content: flex-start; gap: 6px; flex-wrap: wrap; }
-        .iletisim-alani { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; justify-content: flex-start; }
-        .iletisim-badge { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 5px 8px; font-size: 11px; color: #334155; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; }
+        .profil-logo-yuvarlak .logo-varsayilan { font-size: 30px; font-weight: 800; color: #1d4ed8; }
+        .profil-acente-adi { font-size: 18px; font-weight: 800; color: #0f172a; line-height: 1.15; text-transform: capitalize; }
+        .profil-iletisim-satir { font-size: 12px; color: #475569; display: flex; align-items: center; justify-content: flex-start; gap: 8px; flex-wrap: wrap; }
+        .iletisim-alani { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; justify-content: flex-start; }
+        .iletisim-badge { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 7px 10px; font-size: 12px; color: #334155; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
         
         /* Sosyal Medya / İletişim Rozet Yerleşimi */
-        .profil-sosyal-grid { display: flex; justify-content: flex-start; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
-        .sosyal-rozet { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 6px 10px; font-size: 12px; color: #334155; font-weight: 600; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
+        .profil-sosyal-grid { display: flex; justify-content: flex-start; gap: 10px; flex-wrap: wrap; margin-top: 14px; margin-bottom: 10px; padding-left: 15px; }
+        .sosyal-rozet { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 8px 12px; font-size: 12px; color: #334155; font-weight: 700; box-shadow: 0 8px 18px rgba(15,23,42,0.05); }
 
         /* Tanıtım Görsel Alanı */
-        .kurumsal-gorsel-alani { padding: 0 15px; text-align: center; margin-bottom: 15px; }
-        .kurumsal-img { width: 100%; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); object-fit: cover; height: 140px; display: block; }
-        .kurumsal-alt-yazi { font-size: 11px; color: #64748b; line-height: 1.4; padding: 0 10px; margin-top: 8px; }
+        .kurumsal-gorsel-alani { position: relative; padding: 0; text-align: center; margin: 0 15px 15px 15px; border-radius: 20px; overflow: hidden; background: #f8fbff; box-shadow: 0 18px 45px rgba(15,23,42,0.08); }
+        .kurumsal-img { width: 100%; border-radius: 0; object-fit: cover; height: 180px; display: block; filter: saturate(1.06); }
+        .kurumsal-alt-yazi { font-size: 12px; color: #475569; line-height: 1.6; padding: 14px 16px; background: linear-gradient(180deg, rgba(248,251,255,0.9), rgba(255,255,255,1)); text-align: left; }
+        .kurumsal-gorsel-alani::before { content: ''; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(255,255,255,0.7), transparent 40%); pointer-events: none; }
 
         /* İkaz Lambası */
-        .ikaz-lambasi-alani { background: #fef2f2; border: 1px solid #fee2e2; border-radius: 10px; padding: 12px; display: flex; align-items: center; gap: 10px; margin: 0 15px 15px 15px; text-align: left; }
-        .ikaz-isik { width: 12px; height: 12px; background-color: #dc2626; border-radius: 50%; box-shadow: 0 0 10px #dc2626; animation: yanipSon 1s infinite alternate; flex-shrink: 0; }
-        .ikaz-metin { font-size: 12px; font-weight: bold; color: #991b1b; line-height: 1.4; }
-        @keyframes yanipSon { 0% { opacity: 0.3; box-shadow: 0 0 2px #dc2626; } 100% { opacity: 1; box-shadow: 0 0 12px #dc2626; } }
+        .ikaz-lambasi-alani { background: #fef2f2; border: 1px solid #fee2e2; border-radius: 16px; padding: 14px 16px; display: flex; align-items: center; gap: 12px; margin: 0 15px 15px 15px; text-align: left; }
+        .ikaz-lambasi-alani.hidden { display: none !important; }
+        .ikaz-isik { width: 12px; height: 12px; background-color: #dc2626; border-radius: 50%; box-shadow: 0 0 10px rgba(220,38,38,0.5); animation: yanipSon 1s infinite alternate; flex-shrink: 0; }
+        .ikaz-metin { font-size: 13px; font-weight: 700; color: #991b1b; line-height: 1.5; }
+        @keyframes yanipSon { 0% { opacity: 0.3; box-shadow: 0 0 2px rgba(220,38,38,0.4); } 100% { opacity: 1; box-shadow: 0 0 12px rgba(220,38,38,0.35); } }
 
-        .menu-grid-alani { padding: 0 15px; }
+        .menu-grid-alani { padding: 0 15px 15px 15px; }
         .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .btn { padding: 16px 10px; border-radius: 12px; border: none; font-weight: bold; color: white; cursor: pointer; text-align: center; text-decoration: none; font-size: 14px; display: flex; align-items: center; justify-content: center; }
-        .btn-giris { background: #2563eb; }
-        .btn-arama { background: #10b981; }
-        .btn-istatistik { background: #8b5cf6; }
-        .btn-ayarlar { background: #4b5563; }
-        .btn-hakkinda { background: #ec4899; width: 100%; margin-top: 12px; }
+        .btn { padding: 16px 10px; border-radius: 18px; border: none; font-weight: 700; color: white; cursor: pointer; text-align: center; text-decoration: none; font-size: 14px; display: flex; align-items: center; justify-content: center; min-height: 60px; box-shadow: 0 10px 20px rgba(15,23,42,0.08); transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease; }
+        .btn:hover { transform: translateY(-1px); box-shadow: 0 14px 24px rgba(15,23,42,0.12); }
+        .btn:active { transform: translateY(0); }
+        .btn:focus-visible { outline: 3px solid rgba(59,130,246,0.35); outline-offset: 2px; }
+        .btn-giris { background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); }
+        .btn-arama { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
+        .btn-istatistik { background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%); }
+        .btn-ayarlar { background: linear-gradient(135deg, #4b5563 0%, #334155 100%); }
+        .btn-hakkinda { background: linear-gradient(135deg, #ec4899 0%, #db2777 100%); width: 100%; margin-top: 14px; }
         
-        .form-bolum-baslik { font-size: 13px; font-weight: bold; color: #1d4ed8; text-transform: uppercase; margin: 25px 0 12px 0; border-bottom: 2px solid #ef4444; padding-bottom: 3px; text-align: left; }
+        .form-bolum-baslik { font-size: 13px; font-weight: 800; color: #1d4ed8; text-transform: uppercase; margin: 24px 15px 10px 15px; border-bottom: 2px solid #93c5fd; padding-bottom: 4px; text-align: left; }
         .form-grup { margin-bottom: 14px; text-align: left; width: 100%; display: block; }
-        .form-grup label { display: block; font-size: 12px; font-weight: bold; margin-bottom: 5px; color: #4b5563; }
-        .form-grup input, .form-grup select { width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 13px; outline: none; }
-        footer { padding: 12px; background: #f9fafb; border-top: 1px solid #e5e7eb; text-align: center; border-radius: 0 0 12px 12px; font-size: 11px; color: #94a3b8; }
+        .form-grup label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 5px; color: #475569; }
+        .form-grup input, .form-grup select { width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 12px; font-size: 13px; outline: none; }
+        footer { padding: 14px 18px; background: transparent; border-top: 1px solid #e5e7eb; text-align: center; font-size: 12px; color: #64748b; }
         .hidden { display: none !important; }
-        .firebase-card { margin: 10px 15px; padding: 12px; background: #eff6ff; border: 1px solid #dbeafe; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
-        .firebase-card span { font-size: 13px; color: #1e293b; }
-        .firebase-card button { padding: 10px 14px; background: #4285f4; color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: 700; }
+        .firebase-card { margin: 15px 15px 0 15px; padding: 14px 16px; background: #ffffff; border: 1px solid #dbeafe; border-radius: 18px; display: flex; justify-content: space-between; align-items: center; gap: 12px; box-shadow: 0 10px 20px rgba(15,23,42,0.05); }
+        .firebase-card span { font-size: 13px; color: #0f172a; line-height: 1.4; }
+        .firebase-card button { padding: 10px 16px; background: linear-gradient(135deg, #4285f4 0%, #1d4ed8 100%); color: white; border: none; border-radius: 14px; cursor: pointer; font-weight: 700; }
         /* SW güncelleme bildirim çubuğu */
         #sw-update-banner { position: fixed; left: 50%; transform: translateX(-50%); bottom: 18px; background:#111827; color: #fff; padding:10px 14px; border-radius:10px; box-shadow:0 6px 20px rgba(0,0,0,0.25); display:flex; gap:10px; align-items:center; z-index:9999; font-size:13px; }
         #sw-update-banner button { background:#10b981; color:#fff; border:none; padding:6px 10px; border-radius:8px; cursor:pointer; font-weight:700; }
@@ -80,10 +85,7 @@
                 <div id="pwa-app-versiyon-text" style="font-size:11px; padding:3px 8px; background:#e5e7eb; border-radius:4px; font-weight: 600;">v.6.3</div>
             </div>
         </header>
-        <div class="firebase-card" id="firebase-auth-card">
-            <span id="firebase-user-label">Google ile giriş yapılmadı.</span>
-            <button type="button" id="firebase-auth-btn" onclick="toggleFirebaseAuth()">Gmail ile Giriş Yap</button>
-        </div>
+        <!-- Firebase / Gmail giriş UI kaldırıldı - kullanıcı karışıklığını önlemek amacıyla -->
         <main>
             <div id="ana-sayfa-alani">
                 <div class="profil-ust-zemin">
@@ -91,6 +93,7 @@
                         <div class="profil-logo-yuvarlak" id="pwa-profil-logo-alan"></div>
                         <div class="profil-baslik-alan">
                             <div class="profil-acente-adi" id="pwa-acente-adi-text">Acente</div>
+                            <div style="font-size:12px; color:#475569; line-height:1.5;">Sigorta kayıtlarınızı tek ekranda hızlıca takip edin.</div>
                             <div class="iletisim-alani" id="pwa-contact-grid-alan"></div>
                         </div>
                     </div>
@@ -468,107 +471,13 @@
             }
         }
     </script>
-    <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js';
-        import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js';
-        import { getFirestore, collection, addDoc, query, where, getDocs, serverTimestamp } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js';
-
-        const firebaseConfig = {
-            apiKey: 'YOUR_API_KEY',
-            authDomain: 'YOUR_PROJECT_ID.firebaseapp.com',
-            projectId: 'YOUR_PROJECT_ID',
-            storageBucket: 'YOUR_PROJECT_ID.appspot.com',
-            messagingSenderId: 'YOUR_MESSAGING_SENDER_ID',
-            appId: 'YOUR_APP_ID'
+    <script>
+        // Firebase / Gmail giriş UI ve otomatik oturum izleme kaldırıldı.
+        // Uygulama içinde bir kayıt buluta kaydedilmeye çalışılırsa hata olmasın diye boş stub bırakıyoruz.
+        window.saveRecordToFirestore = async function(record) {
+            console.warn('saveRecordToFirestore çağrıldı, ancak Firebase devre dışı bırakıldı.');
+            return null;
         };
-
-        let firebaseAuth = null;
-        let firebaseDb = null;
-        let firebaseUser = null;
-
-        const authButton = document.getElementById('firebase-auth-btn');
-        const authLabel = document.getElementById('firebase-user-label');
-
-        window.toggleFirebaseAuth = async function () {
-            alert('Firebase yapılandırması tamamlanmadı. Lütfen index.html içinde firebaseConfig bilgilerinizi girin.');
-        };
-
-        function isFirebaseConfigured() {
-            return firebaseConfig.apiKey && !firebaseConfig.apiKey.includes('YOUR_API_KEY');
-        }
-
-        function updateFirebaseUi(user, message) {
-            if (!authLabel || !authButton) return;
-            if (message) {
-                authLabel.innerText = message;
-                authButton.innerText = firebaseUser ? 'Çıkış Yap' : 'Gmail ile Giriş Yap';
-                authButton.disabled = false;
-                return;
-            }
-            if (user) {
-                authLabel.innerText = 'Giriş yapan hesap: ' + (user.email || user.displayName || user.uid);
-                authButton.innerText = 'Çıkış Yap';
-            } else {
-                authLabel.innerText = 'Google ile giriş yapılmadı.';
-                authButton.innerText = 'Gmail ile Giriş Yap';
-            }
-            authButton.disabled = false;
-        }
-
-        async function initFirebase() {
-            if (!isFirebaseConfigured()) {
-                updateFirebaseUi(null, 'Firebase config eksik. lütfen index.html içinde ayarları güncelleyin.');
-                return;
-            }
-            const app = initializeApp(firebaseConfig);
-            firebaseAuth = getAuth(app);
-            firebaseDb = getFirestore(app);
-            const provider = new GoogleAuthProvider();
-
-            onAuthStateChanged(firebaseAuth, async (user) => {
-                firebaseUser = user;
-                updateFirebaseUi(user);
-                if (user) {
-                    await loadRecordsFromFirestore();
-                }
-            });
-
-            window.toggleFirebaseAuth = async function () {
-                if (!firebaseAuth) return;
-                if (firebaseUser) {
-                    await signOut(firebaseAuth);
-                } else {
-                    try {
-                        await signInWithPopup(firebaseAuth, provider);
-                    } catch (err) {
-                        alert('Google girişinde hata: ' + err.message);
-                    }
-                }
-            };
-        }
-
-        async function saveRecordToFirestore(record) {
-            if (!firebaseUser || !firebaseDb) return;
-            const collectionRef = collection(firebaseDb, 'acente_records');
-            await addDoc(collectionRef, {
-                ...record,
-                userId: firebaseUser.uid,
-                userEmail: firebaseUser.email || '',
-                timestamp: serverTimestamp()
-            });
-        }
-        window.saveRecordToFirestore = saveRecordToFirestore;
-
-        async function loadRecordsFromFirestore() {
-            if (!firebaseUser || !firebaseDb) return;
-            const collectionRef = collection(firebaseDb, 'acente_records');
-            const q = query(collectionRef, where('userId', '==', firebaseUser.uid));
-            const snapshot = await getDocs(q);
-            const loaded = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-            console.log('Firebase kayıtları yüklendi:', loaded.length);
-        }
-
-        initFirebase();
     </script>
         <script>
         if ("serviceWorker" in navigator) {
